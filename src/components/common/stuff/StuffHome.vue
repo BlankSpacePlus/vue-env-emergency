@@ -12,7 +12,7 @@
 
 <script>
 import vHead from '../Header.vue';
-import vSidebar from './Sidebar-admin.vue';
+import vSidebar from './StuffSidebar';
 export default {
   components:{
     vHead, vSidebar
@@ -27,7 +27,6 @@ export default {
   width: 100%;
 }
 .whole {
-  /*margin: 30px;*/
   margin-left: 70px;
 }
 .block {

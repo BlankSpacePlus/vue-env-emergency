@@ -41,7 +41,8 @@ export default {
     return {
       user: {
         username: "",
-        password: ""
+        password: "",
+        identity: ""
       },
       permisson: "",
       url: '',
@@ -54,20 +55,73 @@ export default {
   },
   methods: {
     submit() {
-      sessionStorage.setItem("user", this.user.username);
-      const loading = this.$loading({
-        lock: true,
-        target: document.querySelector(".div1")
-      });
-      //设置登陆延迟
-      setTimeout(() => {
-        loading.close();
-        this.$router.push({ path: "/home-admin/initial" });
-        this.$message({
-          message: "登陆成功！",
-          type: "success"
+      sessionStorage.setItem("username", this.user.username);
+      if (this.user.username === "admin" && this.user.password === "admin") {
+        const loading = this.$loading({
+          lock: true,
+          target: document.querySelector(".div1")
         });
-      }, 2000);
+        this.user.identity = "管理员";
+        sessionStorage.setItem("user_identity", this.user.identity);
+        setTimeout(() => {
+          loading.close();
+          this.$router.push({ path: "/home-admin/initial" });
+          this.$message({
+            message: "登陆成功！",
+            type: "success"
+          });
+        }, 2000);
+      } else if (this.user.username === "cmd" && this.user.password === "cmd") {
+        const loading = this.$loading({
+          lock: true,
+          target: document.querySelector(".div1")
+        });
+        this.user.identity = "指挥人员";
+        sessionStorage.setItem("user_identity", this.user.identity);
+        setTimeout(() => {
+          loading.close();
+          this.$router.push({ path: "/home-commander/initial" });
+          this.$message({
+            message: "登陆成功！",
+            type: "success"
+          });
+        }, 2000);
+      } else if (this.user.username === "expert" && this.user.password === "expert") {
+        const loading = this.$loading({
+          lock: true,
+          target: document.querySelector(".div1")
+        });
+        this.user.identity = "专家";
+        sessionStorage.setItem("user_identity", this.user.identity);
+        setTimeout(() => {
+          loading.close();
+          this.$router.push({ path: "/home-expert/initial" });
+          this.$message({
+            message: "登陆成功！",
+            type: "success"
+          });
+        }, 2000);
+      } else if (this.user.username === "stuff" && this.user.password === "stuff") {
+        const loading = this.$loading({
+          lock: true,
+          target: document.querySelector(".div1")
+        });
+        this.user.identity = "工作人员";
+        sessionStorage.setItem("user_identity", this.user.identity);
+        setTimeout(() => {
+          loading.close();
+          this.$router.push({ path: "/home-stuff/initial" });
+          this.$message({
+            message: "登陆成功！",
+            type: "success"
+          });
+        }, 2000);
+      } else {
+        this.$message({
+          message: '用户名或密码错误！',
+          type: 'error'
+        });
+      }
     }
   }
 };

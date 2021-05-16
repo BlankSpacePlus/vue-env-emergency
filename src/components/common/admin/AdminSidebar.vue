@@ -3,7 +3,7 @@
     <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router @select="handleSelect">
       <el-submenu index="1" class="submenu">
         <template slot="title"><i class="el-icon-menu"></i>人员维护</template>
-        <el-menu-item index="/home-admin/register">用户管理</el-menu-item>
+        <el-menu-item index="/home-admin/register">用户信息管理</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>

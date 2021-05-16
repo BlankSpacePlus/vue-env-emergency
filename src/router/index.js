@@ -2,16 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from "../components/Login";
 
-import Home_admin from "../components/common/admin/Home-admin";
-import Sidebar_admin from "../components/common/admin/Sidebar-admin"
-import Home_commander from "../components/common/commander/Home-commander"
-import Sidebar_commander from "../components/common/commander/Sidebar-commander"
-import Home_expert from "../components/common/expert/Home-expert"
-import Sidebar_expert from "../components/common/expert/Sidebar-expert"
-import Home_stuff from "../components/common/stuff/Home-stuff"
-import Siderbar_stuff from "../components/common/stuff/Sidebar-stuff"
+import AdminHome from "../components/common/admin/AdminHome";
+import AdminSidebar from "../components/common/admin/AdminSidebar"
+import CommanderHome from "../components/common/commander/CommanderHome"
+import CommanderSidebar from "../components/common/commander/CommanderSidebar"
+import ExpertHome from "../components/common/expert/ExpertHome"
+import ExpertSidebar from "../components/common/expert/ExpertSidebar"
+import StuffHome from "../components/common/stuff/StuffHome"
+import StuffSidebar from "../components/common/stuff/StuffSidebar"
 
-import Initial from "../components/initial/Initial";
+import AdminInitial from "../components/initial/admin/AdminInitial";
+import CommanderInitial from "../components/initial/commander/CommanderInitial";
+import ExpertInitial from "../components/initial/expert/ExpertInitial";
+import StuffInitial from "../components/initial/stuff/StuffInitial";
+
+
 import Register from "../components/register/Register";
 import Emergency from "../components/emergency/Emergency";
 import Material from "../components/material/Material";
@@ -42,11 +47,11 @@ export default new Router({
     },
     {
       path: '/home-admin',
-      component: Home_admin,
+      component: AdminHome,
       children: [
         {
           path: '/home-admin/initial',
-          component: Initial,
+          component: AdminInitial,
           meta: {
             title: "环保应急管理系统"
           }
@@ -62,11 +67,11 @@ export default new Router({
     },
     {
       path: '/home-commander',
-      component: Home_commander,
+      component: CommanderHome,
       children: [
         {
           path: '/home-commander/initial',
-          component: Initial,
+          component: CommanderInitial,
           meta: {
             title: "环保应急管理系统"
           }
@@ -82,11 +87,11 @@ export default new Router({
     },
     {
       path: '/home-expert',
-      component: Home_expert,
+      component: ExpertHome,
       children: [
         {
           path: '/home-expert/initial',
-          component: Initial,
+          component: ExpertInitial,
           meta: {
             title: "环保应急管理系统"
           }
@@ -102,11 +107,11 @@ export default new Router({
     },
     {
       path: '/home-stuff',
-      component: Home_stuff,
+      component: StuffHome,
       children: [
         {
           path: '/home-stuff/initial',
-          component: Initial,
+          component: StuffInitial,
           meta: {
             title: "环保应急管理系统"
           }

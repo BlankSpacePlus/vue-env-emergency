@@ -8,7 +8,8 @@
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link" style="color: #364766;"><img src="../../assets/logo.svg" class="logo" ></span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="logout" v-text="'用户： ' + user.username + '管理员'" disabled="true" style="color: #364766"></el-dropdown-item>
+            <el-dropdown-item command="logout" v-text="user.username" disabled="true" style="color: #364766"></el-dropdown-item>
+            <el-dropdown-item command="logout" v-text="user.identity" disabled="true" style="color: #364766" divided="true"></el-dropdown-item>
             <el-dropdown-item command="logout" divided="true">退出登陆</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -32,7 +33,8 @@ export default {
     // document.querySelector('body').setAttribute('style', 'margin = 0;')
   },
   created() {
-    this.user.username = sessionStorage.getItem("user");
+    this.user.username = sessionStorage.getItem("username");
+    this.user.identity = sessionStorage.getItem("user_identity")
     this.user.permission = sessionStorage.getItem("permission");
   },
   methods: {
