@@ -24,3 +24,6 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# 说明
+1. Tree控件参考自[Github](https://github.com/xiaoniezi/vue-tree)
