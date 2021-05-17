@@ -145,7 +145,7 @@ export default {
       this.editForm = Object.assign({}, row);
     },
     handleDelete: function(index, row) {
-      this.$confirm("确认删除该物资位置吗?", "提示", {
+      this.$confirm("确认删除该物资位置信息吗?", "提示", {
         type: "warning"
       }).then(() => {
         this.loading = true;
