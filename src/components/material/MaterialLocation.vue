@@ -182,7 +182,7 @@ export default {
       });
     },
     batchRemove: function() {
-      this.$confirm("确认是否删除这些企业位置信息?", "提示", {
+      this.$confirm("确认是否删除这些物资位置信息?", "提示", {
         type: "warning"
       }).then(() => {
         this.loading = true;
