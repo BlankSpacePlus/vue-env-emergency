@@ -10,7 +10,7 @@
           <el-button type="primary" icon="el-icon-search" v-on:click="getUserInfo">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-goods" @click="addUserInfo" style="margin-left: 600px">添加用户</el-button>
+          <el-button type="primary" icon="el-icon-circle-plus" @click="addUserInfo">添加用户</el-button>
         </el-form-item>
       </el-form>
     </el-col>
