@@ -16,6 +16,9 @@ import CommanderInitial from "../components/initial/commander/CommanderInitial";
 import ExpertInitial from "../components/initial/expert/ExpertInitial";
 import StuffInitial from "../components/initial/stuff/StuffInitial";
 
+import CommanderAlert from "../components/alert/commander/CommanderAlert";
+import ExpertAlert from "../components/alert/expert/ExpertAlert";
+import StuffAlert from "../components/alert/stuff/StuffAlert";
 
 import Register from "../components/register/Register";
 import Emergency from "../components/emergency/Emergency";
@@ -23,7 +26,6 @@ import Material from "../components/material/Material";
 import MaterialLocation from "../components/material/MaterialLocation";
 import Company from "../components/company/Company";
 import City from "../components/city/City";
-import Alert from "../components/alert/Alert";
 import Process from "../components/process/Process";
 
 Vue.use(Router);
@@ -78,7 +80,7 @@ export default new Router({
         },
         {
           path: '/home-commander/alert',
-          component: Alert,
+          component: CommanderAlert,
           meta: {
             title: "环保应急管理系统"
           }
@@ -98,7 +100,7 @@ export default new Router({
         },
         {
           path: '/home-expert/alert',
-          component: Alert,
+          component: ExpertAlert,
           meta: {
             title: "环保应急管理系统"
           }
@@ -160,7 +162,7 @@ export default new Router({
         },
         {
           path: '/home-stuff/alert',
-          component: Alert,
+          component: StuffAlert,
           meta: {
             title: "环保应急管理系统"
           }
