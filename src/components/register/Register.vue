@@ -280,7 +280,7 @@ export default {
       });
     },
     batchRemove: function() {
-      this.$confirm("确认是否删除这些费用科目?", "提示", {
+      this.$confirm("确认是否删除这些用户信息?", "提示", {
         type: "warning"
       }).then(() => {
         this.loading = true;
