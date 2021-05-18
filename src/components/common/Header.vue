@@ -5,14 +5,16 @@
     </el-col>
     <el-col :span="6">
       <div class="user-info">
-        <el-dropdown trigger="click" @command="handleCommand">
-          <span class="el-dropdown-link" style="color: #364766;"><img src="../../assets/logo.svg" class="logo" ></span>
+        <el-dropdown style="float: right" @command="handleCommand">
+          <span class="el-dropdown-link">
+            <el-avatar icon="el-icon-user-solid" style="margin-top: 10px" size="large" :src="user.icon" :key="user.icon"></el-avatar><i class="el-icon-arrow-down el-icon--right"></i>
+           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="logout" v-text="user.username" disabled="true" style="color: #364766"></el-dropdown-item>
             <el-dropdown-item command="logout" v-text="user.identity" disabled="true" style="color: #364766" divided="true"></el-dropdown-item>
-            <el-dropdown-item command="logout" divided="true">退出登陆</el-dropdown-item>
+            <el-dropdown-item command="logout" divided="true">退出登录</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
+          </el-dropdown>
       </div>
     </el-col>
   </div>
@@ -25,7 +27,9 @@ export default {
       img_src: "../../assets/logo.svg",
       user: {
         username: "",
-        permission: ""
+        permission: "",
+        identit: "",
+        icon: ""
       }
     }
   },
@@ -36,6 +40,17 @@ export default {
     this.user.username = sessionStorage.getItem("username");
     this.user.identity = sessionStorage.getItem("user_identity")
     this.user.permission = sessionStorage.getItem("permission");
+    if (this.user.username === "admin") {
+      this.user.icon = "https://img-blog.csdnimg.cn/20210519010649226.jpeg";
+    } else if (this.user.username === "cmd") {
+      this.user.icon = "https://img-blog.csdnimg.cn/20210519010649216.jpg";
+    } else if (this.user.username === "expert") {
+      this.user.icon = "https://img-blog.csdnimg.cn/20210519010649211.jpg";
+    } else if (this.user.username === "stuff") {
+      this.user.icon = "https://img-blog.csdnimg.cn/20210519010649197.jpg";
+    } else {
+      this.user.icon = "../../assets/logo.svg";
+    }
   },
   methods: {
     handleCommand(command) {

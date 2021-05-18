@@ -39,7 +39,7 @@ export default{
       isLoading: false,// 是否加载
       setTree: api.treelist || [],// tree数据
       NODE_KEY: 'id',// id对应字段
-      MAX_LEVEL: 3,// 设定最大层级
+      // MAX_LEVEL: 3,// 设定最大层级
       NODE_ID_START: 0,// 新增节点id，逐次递减
       startId: null,
       defaultProps: {// 默认设置
@@ -157,8 +157,8 @@ export default{
     // label
     .comp-tr-node--name{
       display: inline-block;
-      line-height: 40px;
-      min-height: 40px;
+      line-height: 20px;
+      min-height: 20px;
       // 新增
       &.is-new{
         font-weight: bold;

@@ -42,7 +42,8 @@ export default {
       user: {
         username: "",
         password: "",
-        identity: ""
+        identity: "",
+        icon: "",
       },
       permisson: "",
       url: '',
