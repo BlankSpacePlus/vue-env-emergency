@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar">
-    <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router @select="handleSelect">
+    <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router @open="handleOpen" @close="handleClose" :collapse="isCollapse">
       <el-submenu index="1" class="submenu">
-        <template slot="title"><i class="el-icon-menu"></i>人员维护</template>
-        <el-menu-item index="/home-admin/register">用户信息管理</el-menu-item>
+        <template slot="title"><i class="el-icon-menu"></i><span>人员维护</span></template>
+        <el-menu-item index="/home-admin/register"><span>用户信息管理</span></el-menu-item>
       </el-submenu>
     </el-menu>
   </div>
@@ -12,9 +12,21 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      isCollapsed: false
+    }
   },
-  methods: {}
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleSelect(key, keyPath) {
+      this.isCollapsed = !this.isCollapsed;
+    }
+  }
 };
 </script>
 
@@ -28,7 +40,6 @@ export default {
   bottom: 0;
 }
 .el-menu-vertical-demo {
-  background: #d3dce6;
   background: white;
   filter:alpha(Opacity=85);
   -moz-opacity:0.75;

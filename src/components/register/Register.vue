@@ -1,6 +1,13 @@
 <template>
   <section>
-    <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">用户信息管理</el-col>
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
+      <el-tooltip content="点我返回首页" placement="bottom" effect="light">
+        <el-breadcrumb-item :to="{path: '/home-admin/initial'}">管理员首页</el-breadcrumb-item>
+      </el-tooltip>
+      <el-breadcrumb-item>人员维护</el-breadcrumb-item>
+      <el-breadcrumb-item>用户信息管理</el-breadcrumb-item>
+    </el-breadcrumb>
+<!--    <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">用户信息管理</el-col>-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
         <el-form-item label="用户ID">

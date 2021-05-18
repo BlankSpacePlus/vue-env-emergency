@@ -1,6 +1,12 @@
 <template>
   <section>
-    <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">接报信息管理</el-col>
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
+      <el-tooltip content="点我返回首页" placement="bottom" effect="light">
+        <el-breadcrumb-item :to="{path: '/home-commander/initial'}">指挥人员首页</el-breadcrumb-item>
+      </el-tooltip>
+      <el-breadcrumb-item>接报维护</el-breadcrumb-item>
+      <el-breadcrumb-item>接报信息管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
         <el-form-item label="接报ID">

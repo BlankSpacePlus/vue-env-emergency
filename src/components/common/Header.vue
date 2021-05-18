@@ -10,9 +10,10 @@
             <el-avatar icon="el-icon-user-solid" style="margin-top: 10px" size="large" :src="user.icon" :key="user.icon"></el-avatar><i class="el-icon-arrow-down el-icon--right"></i>
            </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="logout" v-text="user.username" disabled="true" style="color: #364766"></el-dropdown-item>
-            <el-dropdown-item command="logout" v-text="user.identity" disabled="true" style="color: #364766" divided="true"></el-dropdown-item>
-            <el-dropdown-item command="logout" divided="true">退出登录</el-dropdown-item>
+            <el-dropdown-item command="logout" v-text="user.identity + ' - ' + user.username" disabled="true" style="color: #364766"></el-dropdown-item>
+            <el-tooltip content="点我退出" placement="bottom" effect="light">
+              <el-dropdown-item command="logout" icon="el-icon-warning" divided="true">退出登录</el-dropdown-item>
+            </el-tooltip>
           </el-dropdown-menu>
           </el-dropdown>
       </div>

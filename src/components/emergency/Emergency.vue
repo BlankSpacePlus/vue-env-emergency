@@ -1,6 +1,13 @@
-<!--借鉴自:https://github.com/xiaoniezi/vue-tree-->
+<!--借鉴自:https://github.com/xiaoniezi/vue-tree -->
 <template>
   <div v-loading="isLoading" class="comp-tree">
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
+      <el-tooltip content="点我返回首页" placement="bottom" effect="light">
+        <el-breadcrumb-item :to="{path: '/home-stuff/initial'}">工作人员首页</el-breadcrumb-item>
+      </el-tooltip>
+      <el-breadcrumb-item>事件维护</el-breadcrumb-item>
+      <el-breadcrumb-item>紧急事件管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-button type="primary" size="small"  class="comp-tr-top" icon="el-icon-circle-plus" @click="handleAddTop">添加顶级事件节点</el-button>
     <!-- tree -->
     <el-tree ref="SlotTree" :data="setTree" :props="defaultProps" :expand-on-click-node="false"

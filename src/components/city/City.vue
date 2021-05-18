@@ -1,5 +1,12 @@
 <template>
   <section>
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
+      <el-tooltip content="点我返回首页" placement="bottom" effect="light">
+        <el-breadcrumb-item :to="{path: '/home-stuff/initial'}">工作人员首页</el-breadcrumb-item>
+      </el-tooltip>
+      <el-breadcrumb-item>城市信息维护</el-breadcrumb-item>
+      <el-breadcrumb-item>城市信息管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">城市信息管理</el-col>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">

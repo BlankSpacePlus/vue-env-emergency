@@ -1,4 +1,4 @@
-<!--借鉴自:https://github.com/xiaoniezi/vue-tree-->
+<!--借鉴自:https://github.com/xiaoniezi/vue-tree -->
 <template>
   <div class="slot-tree">
     <el-button class="slot-t-top" type="primary" size="small" @click="handleAddTop">添加顶级节点</el-button>

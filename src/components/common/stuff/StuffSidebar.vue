@@ -11,19 +11,19 @@
         <el-menu-item index="/home-stuff/material-location">物资位置信息管理</el-menu-item>
       </el-submenu>
       <el-submenu index="3" class="submenu">
-        <template slot="title"><i class="el-icon-menu"></i>流程维护</template>
-        <el-menu-item index="/home-stuff/process">流程管理</el-menu-item>
+        <template slot="title"><i class="el-icon-menu"></i>流程信息维护</template>
+        <el-menu-item index="/home-stuff/process">流程信息管理</el-menu-item>
       </el-submenu>
       <el-submenu index="4" class="submenu">
-        <template slot="title"><i class="el-icon-menu"></i>风险企业维护</template>
-        <el-menu-item index="/home-stuff/company">风险企业管理</el-menu-item>
+        <template slot="title"><i class="el-icon-menu"></i>风险企业信息维护</template>
+        <el-menu-item index="/home-stuff/company">风险企业信息管理</el-menu-item>
       </el-submenu>
       <el-submenu index="5" class="submenu">
         <template slot="title"><i class="el-icon-menu"></i>城市信息维护</template>
         <el-menu-item index="/home-stuff/city">城市信息管理</el-menu-item>
       </el-submenu>
       <el-submenu index="6" class="submenu">
-        <template slot="title"><i class="el-icon-menu"></i>接报维护</template>
+        <template slot="title"><i class="el-icon-menu"></i>接报信息维护</template>
         <el-menu-item index="/home-stuff/alert">接报信息管理</el-menu-item>
       </el-submenu>
     </el-menu>

@@ -1,6 +1,12 @@
 <template>
   <section>
-    <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">风险企业信息管理</el-col>
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
+      <el-tooltip content="点我返回首页" placement="bottom" effect="light">
+        <el-breadcrumb-item :to="{path: '/home-stuff/initial'}">工作人员首页</el-breadcrumb-item>
+      </el-tooltip>
+      <el-breadcrumb-item>风险企业信息维护</el-breadcrumb-item>
+      <el-breadcrumb-item>风险企业信息管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
         <el-form-item label="风险企业ID">
