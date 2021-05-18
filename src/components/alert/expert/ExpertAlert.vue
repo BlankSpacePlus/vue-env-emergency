@@ -9,9 +9,6 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" v-on:click="getAlertInfo">查询</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-circle-plus" @click="addAlertInfo">添加接报</el-button>
-        </el-form-item>
       </el-form>
     </el-col>
     <template>
@@ -30,117 +27,12 @@
         <el-table-column prop="update_id" label="最后更新者编号" width="120" align="center"></el-table-column>
         <el-table-column prop="process_update" label="最后更新时间" width="120" align="center"></el-table-column>
         <el-table-column prop="process_state" label="流程状态" width="100" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" min-width="200">
+        <el-table-column label="操作" align="center" min-width="100">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" type="danger" @click="handleEdit(scope.$index, scope.row)">处理</el-button>
           </template>
         </el-table-column>
-        <el-dialog title="添加接报" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
-          <el-form :model="addAlertItem">
-            <el-form-item label="接报ID：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="接报名称：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_emergency_name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="风险企业编号：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_company_code" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="事件代码：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_code" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="流程ID：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_process_id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="报警人：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_p_name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="报警人联系电话：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_p_tel" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="接报时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择接报时间" v-model="addAlertItem.new_alert_time" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="流程创建者：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_process_p_name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="流程创建时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择流程创建时间" v-model="addAlertItem.new_process_create" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="最后更新者编号：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_update_id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="最后更新时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择最后更新时间" v-model="addAlertItem.new_process_update" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="流程状态：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_process_state" style="width: 200px"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible=false">取消</el-button>
-            <el-button type="primary" @click="dialogClick">添加</el-button>
-          </div>
-        </el-dialog>
-        <el-dialog title="编辑" :visible.sync="editFormVisible" :append-to-body="true" width="500px" center>
-          <el-form :model="editForm" ref="editForm">
-            <el-form-item label="接报ID：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="接报名称：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.emergency_name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="风险企业编号：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.company_code" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="事件代码：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.code" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="流程ID：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.process_id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="报警人：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.p_name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="报警人联系电话：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.p_tel" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="接报时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择接报时间" v-model="editForm.alert_time" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="流程创建者：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.process_p_name" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="流程创建时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择流程创建时间" v-model="editForm.process_create" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="最后更新者编号：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.update_id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="最后更新时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择最后更新时间" v-model="editForm.process_update" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="流程状态：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.process_state" style="width: 200px"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click.native="editFormVisible=false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit">提交</el-button>
-          </div>
-        </el-dialog>
       </el-table>
-      <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
-      </el-col>
     </template>
   </section>
 </template>

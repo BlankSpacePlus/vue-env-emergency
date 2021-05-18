@@ -9,9 +9,6 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" v-on:click="getAlertInfo">查询</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-circle-plus" @click="addAlertInfo">添加接报</el-button>
-        </el-form-item>
       </el-form>
     </el-col>
     <template>
@@ -32,8 +29,8 @@
         <el-table-column prop="process_state" label="流程状态" width="100" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" type="primary" @click="handleEdit(scope.$index, scope.row)">处理</el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">上报</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加接报" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
@@ -137,10 +134,6 @@
           </div>
         </el-dialog>
       </el-table>
-      <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
-      </el-col>
     </template>
   </section>
 </template>
