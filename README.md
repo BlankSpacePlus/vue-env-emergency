@@ -27,3 +27,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # 说明
 1. Tree控件参考自[Github](https://github.com/xiaoniezi/vue-tree)
+2. 解决`<el-avatar>`头像切换不显示问题参考自[这篇博文](https://blog.csdn.net/weixin_46096901/article/details/105791636)

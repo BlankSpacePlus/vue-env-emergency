@@ -1,15 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from "../components/Login";
+import Auth from "../components/Auth"
 
 import AdminHome from "../components/common/admin/AdminHome";
-import AdminSidebar from "../components/common/admin/AdminSidebar"
 import CommanderHome from "../components/common/commander/CommanderHome"
-import CommanderSidebar from "../components/common/commander/CommanderSidebar"
 import ExpertHome from "../components/common/expert/ExpertHome"
-import ExpertSidebar from "../components/common/expert/ExpertSidebar"
 import StuffHome from "../components/common/stuff/StuffHome"
-import StuffSidebar from "../components/common/stuff/StuffSidebar"
 
 import AdminInitial from "../components/initial/admin/AdminInitial";
 import CommanderInitial from "../components/initial/commander/CommanderInitial";
@@ -43,6 +40,13 @@ export default new Router({
     {
       path: '/login',
       component: Login,
+      meta: {
+        title: "环保应急管理系统"
+      }
+    },
+    {
+      path: '/auth',
+      component: Auth,
       meta: {
         title: "环保应急管理系统"
       }
