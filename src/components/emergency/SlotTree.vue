@@ -129,9 +129,10 @@ export default{
 }
 /*顶部按钮*/
 .slot-tree .slot-t-top{
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .slot-tree .slot-t-node span{
+  font-size:30px;
   display: inline-block;
 }
 /*节点*/
@@ -140,7 +141,7 @@ export default{
 }
 /*输入框*/
 .slot-tree .slot-t-input .el-input__inner{
-  height: 26px;
+  height: 20px;
   line-height: 26px;
 }
 /*按钮列表*/

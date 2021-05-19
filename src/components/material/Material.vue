@@ -43,10 +43,10 @@
               <el-input v-model="addMaterialItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资名称：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_m_name" style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.new_m_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资数量：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_num" style="width: 200px"></el-input>
+              <el-input-number v-model="addMaterialItem.new_num" @change="handleChange" :min="1" style="width: 200px"></el-input-number>
             </el-form-item>
             <el-form-item label="物资类型：" :label-width="formLabelWidth">
               <el-select v-model="addMaterialItem.new_type" placeholder="请选择物资类型" style="width: 200px">
@@ -83,10 +83,10 @@
               <el-input v-model="editForm.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资名称：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.m_name" style="width: 200px"></el-input>
+              <el-input v-model="editForm.m_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资数量：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.num" style="width: 200px"></el-input>
+              <el-input-number v-model="editForm.num" @change="handleChange" :min="1" style="width: 200px"></el-input-number>
             </el-form-item>
             <el-form-item label="物资类型：" :label-width="formLabelWidth">
               <el-select v-model="editForm.type" placeholder="请选择物资类型" style="width: 200px">
@@ -120,7 +120,7 @@
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
         <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
+        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
   </section>
@@ -337,6 +337,9 @@ export default {
           });
         }, 10);
       });
+    },
+    handleChange(value) {
+      console.log(value);
     }
   }
 };

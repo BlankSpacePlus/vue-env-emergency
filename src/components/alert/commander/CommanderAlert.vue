@@ -35,8 +35,8 @@
         <el-table-column prop="process_state" label="流程状态" width="100" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" type="primary" @click="handleEdit(scope.$index, scope.row)">处理</el-button>
-            <el-button size="small" type="primary" @click="handleDelete(scope.$index, scope.row)">上报</el-button>
+            <el-button size="small" type="primary" @click="handleApprove(scope.$index, scope.row)">审批</el-button>
+            <el-button size="small" type="primary" @click="handleReport(scope.$index, scope.row)">上报</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加接报" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
@@ -139,7 +139,38 @@
             <el-button type="primary" @click.native="editSubmit">提交</el-button>
           </div>
         </el-dialog>
+        <el-dialog title="审批意见" :visible.sync="passFormVisible" :append-to-body="true" width="500px" center>
+          <el-form :model="passForm" ref="editForm">
+            <el-form-item>
+              <el-row type="flex" justify="center">
+                <el-col>
+                  <el-input type="textarea" maxlength="50" show-word-limit v-model="passForm.text" :rows="5"></el-input>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click.native="passFormVisible=false">不通过</el-button>
+            <el-button type="primary" @click.native="passFormVisible=false">通过</el-button>
+          </div>
+        </el-dialog>
+        <el-dialog title="上报说明" :visible.sync="reportFormVisible" :append-to-body="true" width="500px" center>
+          <el-form :model="reportForm" ref="editForm">
+            <el-form-item>
+              <el-row type="flex" justify="center">
+                <el-col>
+                  <el-input type="textarea" maxlength="50" show-word-limit v-model="reportForm.text" :rows="5"></el-input>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click.native="reportFormVisible=false">取消</el-button>
+            <el-button type="primary" @click.native="reportFormVisible=false">上报</el-button>
+          </div>
+        </el-dialog>
       </el-table>
+      <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
     </template>
   </section>
 </template>
@@ -234,10 +265,28 @@ export default {
         update_id: "",
         process_update: "",
         process_state: ""
-      }
+      },
+      passForm: {
+        text: ""
+      },
+      passFormVisible: false,
+      passFormId: 0,
+      reportForm: {
+        text: ""
+      },
+      reportFormVisible: false,
+      reportFormId: 0
     };
   },
   methods: {
+    handleApprove(index, row) {
+      this.passFormVisible = true;
+      this.passFormId = row.id;
+    },
+    handleReport(index, row) {
+      this.reportFormVisible = true;
+      this.reportFormId = row.id;
+    },
     getAlertInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {

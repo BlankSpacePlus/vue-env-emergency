@@ -8,10 +8,11 @@
       <el-breadcrumb-item>事件维护</el-breadcrumb-item>
       <el-breadcrumb-item>紧急事件管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-button type="primary" size="small"  class="comp-tr-top" icon="el-icon-circle-plus" @click="handleAddTop">添加顶级事件节点</el-button>
+    <el-input placeholder="输入关键字进行过滤" v-model="filterText" style="margin-bottom:15px;width:200px;margin-right:10px;"></el-input>
+    <el-button type="primary" size="large"  class="comp-tr-top" icon="el-icon-circle-plus" @click="handleAddTop">添加顶级事件节点</el-button>
     <!-- tree -->
     <el-tree ref="SlotTree" :data="setTree" :props="defaultProps" :expand-on-click-node="false"
-             highlight-current :node-key="NODE_KEY">
+             highlight-current :node-key="NODE_KEY" default-expand-all :filter-node-method="filterNode">
       <div class="comp-tr-node" slot-scope="{node, data}">
         <!-- 编辑状态 -->
         <template v-if="node.isEdit">
@@ -43,6 +44,7 @@ export default{
   name: 'component-tree',
   data(){
     return {
+      filterText: '',
       isLoading: false,// 是否加载
       setTree: api.treelist || [],// tree数据
       NODE_KEY: 'id',// id对应字段
@@ -64,7 +66,16 @@ export default{
     // 初始值
     this.startId = this.NODE_ID_START
   },
+  watch: {
+    filterText(val) {
+      this.$refs.SlotTree.filter(val);
+    }
+  },
   methods: {
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
     handleDelete(_node, _data){// 删除节点
       console.log(_node, _data)
       // 判断是否存在子节点
@@ -200,5 +211,15 @@ export default{
       }
     }
   }
+}
+/deep/ .el-tree-node__label {
+  width: auto;
+  margin-top: 12px;
+  float: right;
+  font-family: “Trebuchet MS”, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: #999999;
+  line-height: 25px;
+  letter-spacing: 1px;
 }
 </style>

@@ -42,10 +42,10 @@
               <el-input v-model="addCompanyItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="风险企业名称：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_name" style="width: 200px"></el-input>
+              <el-input maxlength="10" show-word-limit v-model="addCompanyItem.new_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_corporate" style="width: 200px"></el-input>
+              <el-input maxlength="10" show-word-limit v-model="addCompanyItem.new_corporate" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人联系方式：" :label-width="formLabelWidth">
               <el-input v-model="addCompanyItem.new_tel" style="width: 200px"></el-input>
@@ -57,7 +57,10 @@
               <el-input v-model="addCompanyItem.new_position" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业类型：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_type" style="width: 200px"></el-input>
+              <el-select v-model="addCompanyItem.new_type" placeholder="请选择企业风险类型" style="width: 200px">
+                <el-option value="易燃易爆" label="易燃易爆">易燃易爆</el-option>
+                <el-option value="易发生产事故" label="易发生产事故">易发生产事故</el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -71,10 +74,10 @@
               <el-input v-model="editForm.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="风险企业名称：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.name" style="width: 200px"></el-input>
+              <el-input maxlength="10" show-word-limit v-model="editForm.name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.corporate" style="width: 200px"></el-input>
+              <el-input maxlength="10" show-word-limit v-model="editForm.corporate" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人联系方式：" :label-width="formLabelWidth">
               <el-input v-model="editForm.tel" style="width: 200px"></el-input>
@@ -86,7 +89,10 @@
               <el-input v-model="editForm.position" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业类型：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.type" style="width: 200px"></el-input>
+              <el-select v-model="editForm.type" placeholder="请选择企业风险类型" style="width: 200px">
+                <el-option value="易燃易爆" label="易燃易爆">易燃易爆</el-option>
+                <el-option value="易发生产事故" label="易发生产事故">易发生产事故</el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -97,7 +103,7 @@
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
         <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
+        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
   </section>
@@ -123,8 +129,8 @@ export default {
         },
         {
           id: 2,
-          name: "郭爷煤矿",
-          corporate: "郭Jun",
+          name: "锅爷煤矿",
+          corporate: "郭锅锅",
           tel: "199699699699",
           location: "沈阳",
           position: "41N,123E",

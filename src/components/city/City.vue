@@ -7,7 +7,6 @@
       <el-breadcrumb-item>城市信息维护</el-breadcrumb-item>
       <el-breadcrumb-item>城市信息管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">城市信息管理</el-col>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
@@ -42,7 +41,7 @@
               <el-input v-model="addCityItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市名称：" :label-width="formLabelWidth">
-              <el-input v-model="addCityItem.new_name" style="width: 200px"></el-input>
+              <el-input maxlength="10" show-word-limit v-model="addCityItem.new_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市编码：" :label-width="formLabelWidth">
               <el-input v-model="addCityItem.new_code" style="width: 200px"></el-input>
@@ -67,7 +66,7 @@
             <el-form-item label="城市ID：" :label-width="formLabelWidth">
               <el-input v-model="editForm.id" style="width: 200px"></el-input>
             </el-form-item>
-            <el-form-item label="城市名称：" :label-width="formLabelWidth">
+            <el-form-item maxlength="10" show-word-limit label="城市名称：" :label-width="formLabelWidth">
               <el-input v-model="editForm.name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市编码：" :label-width="formLabelWidth">
@@ -77,10 +76,13 @@
               <el-input v-model="editForm.province" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援人数：" :label-width="formLabelWidth">
+<!--              <el-input :value="editForm.p_num" style="width: 200px" :maxlength='8'-->
+<!--                        onkeyup="this.__vue__.currentValue=this.__vue__.currentValue.replace(/[^\d]/g,'')"></el-input>-->
               <el-input v-model="editForm.p_num" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援车辆数：" :label-width="formLabelWidth">
               <el-input v-model="editForm.car_num" style="width: 200px"></el-input>
+<!--              <el-input v-model="editForm.car_num" pattern="^[+]{0,1}(\d+)$" style="width: 200px"></el-input>-->
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -91,7 +93,7 @@
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
         <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
+        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
   </section>

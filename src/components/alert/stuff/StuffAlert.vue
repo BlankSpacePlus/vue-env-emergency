@@ -23,7 +23,7 @@
     <template>
       <el-table ref="multipleTable" :data="searchAlertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"></el-table-column>
-        <el-table-column prop="id" label="接报ID" width="70" align="left" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="emergency_name" label="事件名称" width="100" align="center"></el-table-column>
         <el-table-column prop="company_code" label="企业编号" width="100" align="center"></el-table-column>
         <el-table-column prop="code" label="事件代码" width="100" align="center"></el-table-column>
@@ -145,7 +145,7 @@
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
         <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
+        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
   </section>

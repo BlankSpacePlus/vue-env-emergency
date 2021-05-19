@@ -40,17 +40,19 @@
               <el-input v-model="addProcessItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程名称：" :label-width="formLabelWidth">
-              <el-input v-model="addProcessItem.new_name" style="width: 200px"></el-input>
+              <el-input v-model="addProcessItem.new_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
-            <!--可以改成多选框-->
             <el-form-item label="流程类型：" :label-width="formLabelWidth">
-              <el-input v-model="addProcessItem.new_type" style="width: 200px"></el-input>
+              <el-select v-model="addProcessItem.new_type" placeholder="请选择流程类型" style="width: 200px">
+                <el-option value="流程" label="流程">流程</el-option>
+                <el-option value="模板" label="模板">模板</el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="流程编码：" :label-width="formLabelWidth">
               <el-input v-model="addProcessItem.new_code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程内容：" :label-width="formLabelWidth">
-              <el-input v-model="addProcessItem.new_detail" style="width: 200px"></el-input>
+              <el-input type="textarea" maxlength="30" show-word-limit v-model="addProcessItem.new_detail" style="width: 200px"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -64,16 +66,19 @@
               <el-input v-model="editForm.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程名称：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.name" style="width: 200px"></el-input>
+              <el-input v-model="editForm.name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程类型：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.type" style="width: 200px"></el-input>
+              <el-select v-model="editForm.type" placeholder="请选择流程类型" style="width: 200px">
+                <el-option value="流程" label="流程">流程</el-option>
+                <el-option value="模板" label="模板">模板</el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="流程编码：" :label-width="formLabelWidth">
               <el-input v-model="editForm.code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程内容：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.detail" style="width: 200px"></el-input>
+              <el-input type="textarea" maxlength="30" show-word-limit v-model="editForm.detail" style="width: 200px"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -84,7 +89,7 @@
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
         <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="10" style="float:right;"></el-pagination>
+        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
   </section>
@@ -102,23 +107,23 @@ export default {
         {
           id: 1,
           name: "流程一",
-          type: "卷页数卷方法卷套路卷关系",
+          type: "流程",
           code: "XX0001",
           detail: "卷狗必死"
         },
         {
           id: 2,
           name: "模板五",
-          type: "课堂考课后考期中考期末考",
+          type: "模板",
           code: "YY8921",
           detail: "我要烤糊了"
         },
         {
           id: 3,
           name: "流程四",
-          type: "平时作业小作业大作业",
+          type: "流程",
           code: "TT12138",
-          detail: "天天写作业NM烦不烦啊"
+          detail: "天天写作业烦不烦啊"
         }
       ],
       searchProcessItem: [],
