@@ -50,7 +50,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click.native="passFormVisible=false">不通过</el-button>
-            <el-button type="primary" @click.native="passFormVisible=false">通过</el-button>
+            <el-button type="primary" @click.native="editSubmit">通过</el-button>
           </div>
         </el-dialog>
       </el-table>
@@ -111,7 +111,7 @@ export default {
           process_create: "2021-05-15",
           update_id: "3",
           process_update: "2021-05-17",
-          process_state: "已结束"
+          process_state: "待审批"
         }
       ],
       searchAlertItem: [],
@@ -158,6 +158,9 @@ export default {
     };
   },
   methods: {
+    confirmApprove() {
+      //
+    },
     handleApprove(index, row) {
       this.passFormVisible = true;
       this.passFormId = row.id;
@@ -247,24 +250,13 @@ export default {
           this.loading = true;
           setTimeout(() => {
             this.alertItem.forEach(item => {
-              if (item.id === this.editFormId) {
-                item.id = this.editForm.id;
-                item.emergency_name = this.editForm.emergency_name;
-                item.new_code = this.editForm.code;
-                item.company_code = this.editForm.company_code;
-                item.process_id = this.editForm.process_id;
-                item.p_name = this.editForm.p_name;
-                item.p_tel = this.editForm.p_tel;
-                item.alert_time = this.editForm.alert_time;
-                item.process_p_name = this.editForm.process_p_name;
-                item.process_create = this.editForm.process_create;
-                item.update_id = this.editForm.update_id;
-                item.process_update = this.editForm.process_update;
-                item.process_state = this.editForm.process_state;
+              if (item.id === this.passFormId) {
+                item.process_state = "已审批";
               }
             });
             this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
             this.loading = false;
+            this.passFormVisible = false;
             this.$message({
               message: "提交成功",
               type: "success"

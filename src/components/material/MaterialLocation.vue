@@ -143,22 +143,12 @@ export default {
       let new_obj = {
         id: this.addMaterialItem.new_id,
         m_name: this.addMaterialItem.new_m_name,
-        num: this.addMaterialItem.new_num,
-        type: this.addMaterialItem.new_type,
-        name: this.addMaterialItem.new_name,
-        tel: this.addMaterialItem.new_tel,
-        code: this.addMaterialItem.new_code,
-        ddl: this.addMaterialItem.new_ddl
+        p_name: this.addMaterialItem.new_p_name
       };
       this.materialItem.push(new_obj);
       this.addMaterialItem.new_id = "";
       this.addMaterialItem.new_m_name = "";
-      this.addMaterialItem.new_num = "";
-      this.addMaterialItem.new_type = "";
-      this.addMaterialItem.new_name = "";
-      this.addMaterialItem.new_tel = "";
-      this.addMaterialItem.new_code = "";
-      this.addMaterialItem.new_ddl = "";
+      this.addMaterialItem.new_p_name = "";
       this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
       this.$message({
         message: "添加成功！",
@@ -195,12 +185,7 @@ export default {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.m_name = this.editForm.m_name;
-                item.num = this.editForm.num;
-                item.type = this.editForm.type;
-                item.name = this.editForm.name;
-                item.tel = this.editForm.tel;
-                item.code = this.editForm.code;
-                item.ddl = this.editForm.ddl;
+                item.p_name = this.editForm.p_name;
               }
             });
             this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));

@@ -40,6 +40,16 @@
             <el-form-item label="城市ID：" :label-width="formLabelWidth">
               <el-input v-model="addCityItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
+
+<!--            <el-form-item label="所属省市：" prop="province">-->
+<!--              <el-select v-model="merchant.province" placeholder="请选择省份（直辖市）" @change="renderCity" clearable>-->
+<!--                <el-option v-for="item in provinceListAll" :key="item.name" :value="item.name"></el-option>-->
+<!--              </el-select>-->
+<!--              <el-select v-model="merchant.city"  placeholder="请选择城市" v-if="citySelectAble" clearable>-->
+<!--                <el-option v-for="item in cityListAll" :key="item.name" :value="item.name"></el-option>-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
+
             <el-form-item label="城市名称：" :label-width="formLabelWidth">
               <el-input maxlength="10" show-word-limit v-model="addCityItem.new_name" style="width: 200px"></el-input>
             </el-form-item>

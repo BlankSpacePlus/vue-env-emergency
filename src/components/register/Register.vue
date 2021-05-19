@@ -52,10 +52,8 @@
               <el-input v-model="registerForm.new_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="性别：" :label-width="formLabelWidth">
-              <el-select v-model="registerForm.new_sex" placeholder="请选择性别" style="width: 200px">
-                <el-option value="男" label="男">男</el-option>
-                <el-option value="女" label="女">女</el-option>
-              </el-select>
+              <el-radio v-model="registerForm.new_sex" label="男">男</el-radio>
+              <el-radio v-model="registerForm.new_sex" label="女">女</el-radio>
             </el-form-item>
             <el-form-item label="出生日期：" :label-width="formLabelWidth">
               <el-date-picker type="date" placeholder="选择出生时间" v-model="registerForm.new_birthday" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
@@ -89,10 +87,8 @@
               <el-input v-model="editForm.name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="性别：" :label-width="formLabelWidth">
-              <el-select v-model="editForm.sex" placeholder="请选择性别" style="width: 200px">
-                <el-option value="男" label="男">男</el-option>
-                <el-option value="女" label="女">女</el-option>
-              </el-select>
+              <el-radio v-model="editForm.sex" label="男">男</el-radio>
+              <el-radio v-model="editForm.sex" label="女">女</el-radio>
             </el-form-item>
             <el-form-item label="出生日期：" :label-width="formLabelWidth">
               <el-date-picker type="date" placeholder="选择出生时间" v-model="editForm.birthday" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
@@ -185,7 +181,7 @@ export default {
         new_username: "",
         new_password: "",
         new_name: "",
-        new_sex: "",
+        new_sex: "男",
         new_birthday: "",
         new_type: ""
       },
@@ -240,7 +236,7 @@ export default {
       this.registerForm.new_username = "";
       this.registerForm.new_password = "";
       this.registerForm.new_name = "";
-      this.registerForm.new_sex = "";
+      this.registerForm.new_sex = "男";
       this.registerForm.new_birthday = "";
       this.registerForm.new_type = "";
       this.searchUserItem = JSON.parse(JSON.stringify(this.userItem));
