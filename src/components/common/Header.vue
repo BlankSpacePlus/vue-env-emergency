@@ -1,7 +1,10 @@
 <template>
   <div class="header" style="display: inline-block;">
     <el-col :span="18">
-      <div class="glowIn" style="vertical-align: middle;">环保应急管理系统</div>
+      <div class="glowIn" style="vertical-align: middle;">
+        <img class="logo" src="../../assets/logo.svg" alt="图片不见啦"/>
+        环保应急管理系统
+      </div>
     </el-col>
     <el-col :span="6">
       <div class="user-info">
@@ -106,8 +109,9 @@ export default {
 .glowIn {
   color: #364766;
   font-size: 30px;
-  font-font-weight: bolder;
+  font-weight: bolder;
   animation: glow-in 0.8s both;
+  height: 50px;
 }
 @keyframes glow-in {
   from {
@@ -127,6 +131,5 @@ export default {
 .logo {
   width: 35px;
   vertical-align: middle;
-  margin-left: 10px;
 }
 </style>

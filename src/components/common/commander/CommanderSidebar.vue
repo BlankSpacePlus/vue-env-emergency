@@ -2,7 +2,7 @@
   <div class="sidebar">
     <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened router @select="handleSelect">
       <el-submenu index="1" class="submenu">
-        <template slot="title"><i class="el-icon-menu"></i>接报维护</template>
+        <template slot="title"><i class="el-icon-menu"></i>接报信息维护</template>
         <el-menu-item index="/home-commander/alert">接报信息管理</el-menu-item>
       </el-submenu>
     </el-menu>

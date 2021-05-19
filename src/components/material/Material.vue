@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
-        <el-form-item label="物资ID">
+        <el-form-item>
           <el-input v-model="filters.input_id" placeholder="请输入物资ID"></el-input>
         </el-form-item>
         <el-form-item>
@@ -21,9 +21,9 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="materialItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchMaterialItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"></el-table-column>
-        <el-table-column prop="id" label="物资ID" width="100" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="m_name" label="物资名称" width="130" align="center"></el-table-column>
         <el-table-column prop="num" label="物资数量" width="130" align="center" sortable></el-table-column>
         <el-table-column prop="type" label="物资类型" width="130" align="center"></el-table-column>
@@ -186,6 +186,7 @@ export default {
           ddl: "2021-05-29"
         }
       ],
+      searchMaterialItem: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
@@ -215,8 +216,17 @@ export default {
   },
   methods: {
     getMaterialInfo() {
-      // TODO 完善一下查询
       this.loading = false;
+      if (this.filters.input_id === "") {
+        this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+      } else {
+        this.searchMaterialItem = [];
+        for (let item in this.materialItem) {
+          if (JSON.stringify(this.materialItem[item]).search(this.filters.input_id) !== -1) {
+            this.searchMaterialItem.push(this.materialItem[item]);
+          }
+        }
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -245,6 +255,7 @@ export default {
       this.addMaterialItem.new_tel = "";
       this.addMaterialItem.new_code = "";
       this.addMaterialItem.new_ddl = "";
+      this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
       this.$message({
         message: "添加成功！",
         type: "success"
@@ -262,12 +273,13 @@ export default {
         this.loading = true;
         setTimeout(() => {
           this.materialItem.splice(index, 1);
+          this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     },
     editSubmit: function() {
@@ -287,13 +299,14 @@ export default {
                 item.ddl = this.editForm.ddl;
               }
             });
+            this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
             this.loading = false;
             this.$message({
               message: "提交成功",
               type: "success"
             });
             this.editFormVisible = false;
-          }, 1500);
+          }, 10);
         });
       });
     },
@@ -316,12 +329,13 @@ export default {
             }
           });
           this.materialItem = tempItem;
+          this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     }
   }

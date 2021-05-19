@@ -10,7 +10,7 @@
     <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">城市信息管理</el-col>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
-        <el-form-item label="城市ID">
+        <el-form-item>
           <el-input v-model="filters.input_id" placeholder="请输入城市ID"></el-input>
         </el-form-item>
         <el-form-item>
@@ -22,9 +22,9 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="cityItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchCityItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="id" label="城市ID" width="120" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="城市名称" width="180" align="center"></el-table-column>
         <el-table-column prop="code" label="城市编码" width="180" align="center"></el-table-column>
         <el-table-column prop="province" label="城市所属省份" width="180" align="center"></el-table-column>
@@ -37,24 +37,24 @@
           </template>
         </el-table-column>
         <el-dialog title="添加城市" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
-          <el-form :model="addcityItem">
+          <el-form :model="addCityItem">
             <el-form-item label="城市ID：" :label-width="formLabelWidth">
-              <el-input v-model="addcityItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市名称：" :label-width="formLabelWidth">
-              <el-input v-model="addcityItem.new_name" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.new_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市编码：" :label-width="formLabelWidth">
-              <el-input v-model="addcityItem.new_code" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.new_code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市所属省份：" :label-width="formLabelWidth">
-              <el-input v-model="addcityItem.new_province" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.new_province" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援人数：" :label-width="formLabelWidth">
-              <el-input v-model="addcityItem.new_p_num" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.new_p_num" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援车辆数：" :label-width="formLabelWidth">
-              <el-input v-model="addcityItem.new_car_num" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.new_car_num" style="width: 200px"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -131,10 +131,11 @@ export default {
           car_num: "220"
         }
       ],
+      searchCityItem: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
-      addcityItem: {
+      addCityItem: {
         new_id: "",
         new_name: "",
         new_code: "",
@@ -156,8 +157,17 @@ export default {
   },
   methods: {
     getMaterialInfo() {
-      // TODO 完善一下查询
       this.loading = false;
+      if (this.filters.input_id === "") {
+        this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+      } else {
+        this.searchCityItem = [];
+        for (let item in this.cityItem) {
+          if (JSON.stringify(this.cityItem[item]).search(this.filters.input_id) !== -1) {
+            this.searchCityItem.push(this.cityItem[item]);
+          }
+        }
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -168,20 +178,21 @@ export default {
     dialogClick() {
       this.dialogFormVisible = false;
       let new_obj = {
-        id: this.addcityItem.new_id,
-        name: this.addcityItem.new_name,
-        code: this.addcityItem.new_code,
-        province: this.addcityItem.new_province,
-        p_num: this.addcityItem.new_p_num,
-        car_num: this.addcityItem.new_car_num
+        id: this.addCityItem.new_id,
+        name: this.addCityItem.new_name,
+        code: this.addCityItem.new_code,
+        province: this.addCityItem.new_province,
+        p_num: this.addCityItem.new_p_num,
+        car_num: this.addCityItem.new_car_num
       };
       this.cityItem.push(new_obj);
-      this.addcityItem.new_id = "";
-      this.addcityItem.new_name = "";
-      this.addcityItem.new_code = "";
-      this.addcityItem.new_province = "";
-      this.addcityItem.new_p_num = "";
-      this.addcityItem.new_car_num = "";
+      this.addCityItem.new_id = "";
+      this.addCityItem.new_name = "";
+      this.addCityItem.new_code = "";
+      this.addCityItem.new_province = "";
+      this.addCityItem.new_p_num = "";
+      this.addCityItem.new_car_num = "";
+      this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
       this.$message({
         message: "添加成功！",
         code: "success"
@@ -199,12 +210,13 @@ export default {
         this.loading = true;
         setTimeout(() => {
           this.cityItem.splice(index, 1);
+          this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             code: "success"
           });
-        }, 1500);
+        }, 10);
       });
     },
     editSubmit: function() {
@@ -222,13 +234,14 @@ export default {
                 item.car_num = this.editForm.car_num;
               }
             });
+            this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
             this.loading = false;
             this.$message({
               message: "提交成功",
               type: "success"
             });
             this.editFormVisible = false;
-          }, 1500);
+          }, 10);
         });
       });
     },
@@ -251,12 +264,13 @@ export default {
             }
           });
           this.cityItem = tempItem;
+          this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     }
   }

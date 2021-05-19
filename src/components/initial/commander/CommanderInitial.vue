@@ -4,6 +4,17 @@
       <h1 style="color: #364766; font-size: 30px">指挥人员子系统介绍</h1>
       <el-row :span="24" :gutter="20">
         <el-col :span="8" class="block">
+          <strong>指挥人员与工作人员共享接报信息，只是不能删改这些信息而已。<br>指挥人员处理接报或者向专家上报紧急情况。<br><br>子功能包括：</strong>
+          <ul>
+            <li>
+              接报维护
+              <ul>
+                <li>
+                  接报信息管理
+                </li>
+              </ul>
+            </li>
+          </ul>
         </el-col>
       </el-row>
     </div>
@@ -31,7 +42,7 @@ export default {
   width: 400px;
   height: 100%;
   padding: 15px 15px 15px;
-  background: #99a9bf;
+  background-color: #99a9bf;
   border: 1px solid #eaeaea;
   box-shadow: 0 0 20px #cac6c6;
   background-image: linear-gradient(to right, #99a9bf, #d3dce6);

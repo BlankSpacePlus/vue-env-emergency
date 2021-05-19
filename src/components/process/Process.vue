@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
-        <el-form-item label="流程ID">
+        <el-form-item>
           <el-input v-model="filters.input_id" placeholder="请输入流程ID"></el-input>
         </el-form-item>
         <el-form-item>
@@ -21,9 +21,9 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="processItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchProcessItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="id" label="流程ID" width="100" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="流程名称" width="150" align="center"></el-table-column>
         <el-table-column prop="type" label="流程类型" width="300" align="center"></el-table-column>
         <el-table-column prop="code" label="流程编码" width="150" align="center"></el-table-column>
@@ -121,6 +121,7 @@ export default {
           detail: "天天写作业NM烦不烦啊"
         }
       ],
+      searchProcessItem: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
@@ -144,8 +145,17 @@ export default {
   },
   methods: {
     getProcessInfo() {
-      // TODO 完善一下查询
       this.loading = false;
+      if (this.filters.input_id === "") {
+        this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
+      } else {
+        this.searchProcessItem = [];
+        for (let item in this.processItem) {
+          if (JSON.stringify(this.processItem[item]).search(this.filters.input_id) !== -1) {
+            this.searchProcessItem.push(this.processItem[item]);
+          }
+        }
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -168,6 +178,7 @@ export default {
       this.addProcessItem.new_type = "";
       this.addProcessItem.new_code = "";
       this.addProcessItem.new_detail = "";
+      this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
       this.$message({
         message: "添加成功！",
         type: "success"
@@ -185,12 +196,13 @@ export default {
         this.loading = true;
         setTimeout(() => {
           this.processItem.splice(index, 1);
+          this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     },
     editSubmit: function() {
@@ -207,13 +219,14 @@ export default {
                 item.detail = this.editForm.detail;
               }
             });
+            this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
             this.loading = false;
             this.$message({
               message: "提交成功",
               type: "success"
             });
             this.editFormVisible = false;
-          }, 1500);
+          }, 10);
         });
       });
     },
@@ -236,12 +249,13 @@ export default {
             }
           });
           this.processItem = tempItem;
+          this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     }
   }

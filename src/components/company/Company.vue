@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
-        <el-form-item label="风险企业ID">
+        <el-form-item>
           <el-input v-model="filters.input_id" placeholder="请输入风险企业ID"></el-input>
         </el-form-item>
         <el-form-item>
@@ -21,9 +21,9 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="companyItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchCompanyItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="id" label="风险企业ID" width="100" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="风险企业名称" width="150" align="center"></el-table-column>
         <el-table-column prop="corporate" label="企业法人" width="150" align="center"></el-table-column>
         <el-table-column prop="tel" label="企业法人联系方式" width="150" align="center"></el-table-column>
@@ -140,6 +140,7 @@ export default {
           type: "易燃易爆"
         }
       ],
+      searchCompanyItem: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
@@ -167,8 +168,17 @@ export default {
   },
   methods: {
     getCompanyInfo() {
-      // TODO 完善一下查询
       this.loading = false;
+      if (this.filters.input_id === "") {
+        this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
+      } else {
+        this.searchCompanyItem = [];
+        for (let item in this.companyItem) {
+          if (JSON.stringify(this.companyItem[item]).search(this.filters.input_id) !== -1) {
+            this.searchCompanyItem.push(this.companyItem[item]);
+          }
+        }
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -195,6 +205,7 @@ export default {
       this.addCompanyItem.new_location = "";
       this.addCompanyItem.new_position = "";
       this.addCompanyItem.new_type = "";
+      this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
       this.$message({
         message: "添加成功！",
         corporate: "success"
@@ -212,12 +223,13 @@ export default {
         this.loading = true;
         setTimeout(() => {
           this.companyItem.splice(index, 1);
+          this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             corporate: "success"
           });
-        }, 1500);
+        }, 10);
       });
     },
     editSubmit: function() {
@@ -236,13 +248,14 @@ export default {
                 item.type = this.editForm.type;
               }
             });
+            this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
             this.loading = false;
             this.$message({
               message: "提交成功",
               type: "success"
             });
             this.editFormVisible = false;
-          }, 1500);
+          }, 10);
         });
       });
     },
@@ -265,12 +278,13 @@ export default {
             }
           });
           this.companyItem = tempItem;
+          this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     }
   }

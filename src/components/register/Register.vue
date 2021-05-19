@@ -7,10 +7,9 @@
       <el-breadcrumb-item>人员维护</el-breadcrumb-item>
       <el-breadcrumb-item>用户信息管理</el-breadcrumb-item>
     </el-breadcrumb>
-<!--    <el-col style="font-size:22px; font-weight: bold; padding-bottom: 40px">用户信息管理</el-col>-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
-        <el-form-item label="用户ID">
+        <el-form-item>
           <el-input v-model="filters.input_id" placeholder="请输入用户ID"></el-input>
         </el-form-item>
         <el-form-item>
@@ -22,9 +21,9 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="userItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchUserItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="ID" width="120" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="username" label="用户名" width="130" align="center"></el-table-column>
         <el-table-column prop="password" label="密码" width="130" align="center"></el-table-column>
         <el-table-column prop="name" label="姓名" width="130" align="center" sortable></el-table-column>
@@ -137,7 +136,7 @@ export default {
       loading: false,
       userItem: [
         {
-          id: 1,
+          id: "1",
           username: "admin",
           password: "admin",
           name: "王二",
@@ -147,7 +146,7 @@ export default {
           state: "正常"
         },
         {
-          id: 2,
+          id: "2",
           username: "cmd",
           password: "cmd",
           name: "李华",
@@ -157,7 +156,7 @@ export default {
           state: "正常"
         },
         {
-          id: 3,
+          id: "3",
           username: "expert",
           password: "expert",
           name: "张强",
@@ -167,7 +166,7 @@ export default {
           state: "正常"
         },
         {
-          id: 4,
+          id: "4",
           username: "stuff",
           password: "stuff",
           name: "王喆",
@@ -177,6 +176,7 @@ export default {
           state: "正常"
         }
       ],
+      searchUserItem: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "100px",
@@ -205,8 +205,17 @@ export default {
   },
   methods: {
     getUserInfo() {
-      // TODO 完善一下查询
       this.loading = false;
+      if (this.filters.input_id === "") {
+        this.searchUserItem = JSON.parse(JSON.stringify(this.userItem));
+      } else {
+        this.searchUserItem = [];
+        for (let item in this.userItem) {
+          if (JSON.stringify(this.userItem[item]).search(this.filters.input_id) !== -1) {
+            this.searchUserItem.push(this.userItem[item]);
+          }
+        }
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -234,6 +243,7 @@ export default {
       this.registerForm.new_sex = "";
       this.registerForm.new_birthday = "";
       this.registerForm.new_type = "";
+      this.searchUserItem = JSON.parse(JSON.stringify(this.userItem));
       this.$message({
         message: "添加成功！",
         type: "success"
@@ -251,12 +261,13 @@ export default {
         this.loading = true;
         setTimeout(() => {
           this.userItem.splice(index, 1);
+          this.searchUserItem = JSON.parse(JSON.stringify(this.userItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     },
     editSubmit: function() {
@@ -276,13 +287,14 @@ export default {
                 item.state = this.editForm.state;
               }
             });
+            this.searchUserItem = JSON.parse(JSON.stringify(this.userItem));
             this.loading = false;
             this.$message({
               message: "提交成功",
               type: "success"
             });
             this.editFormVisible = false;
-          }, 1500);
+          }, 10);
         });
       });
     },
@@ -305,12 +317,13 @@ export default {
             }
           });
           this.userItem = tempItem;
+          this.searchUserItem = JSON.parse(JSON.stringify(this.userItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     }
   }

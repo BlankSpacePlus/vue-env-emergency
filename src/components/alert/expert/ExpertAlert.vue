@@ -4,12 +4,12 @@
       <el-tooltip content="点我返回首页" placement="bottom" effect="light">
         <el-breadcrumb-item :to="{path: '/home-expert/initial'}">专家首页</el-breadcrumb-item>
       </el-tooltip>
-      <el-breadcrumb-item>接报维护</el-breadcrumb-item>
+      <el-breadcrumb-item>接报信息维护</el-breadcrumb-item>
       <el-breadcrumb-item>接报信息管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
-        <el-form-item label="接报ID">
+        <el-form-item>
           <el-input v-model="filters.input_id" placeholder="请输入接报ID"></el-input>
         </el-form-item>
         <el-form-item>
@@ -18,9 +18,9 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="alertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchAlertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"></el-table-column>
-        <el-table-column prop="id" label="接报ID" width="100" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="emergency_name" label="事件名称" width="100" align="center"></el-table-column>
         <el-table-column prop="company_code" label="企业编号" width="100" align="center"></el-table-column>
         <el-table-column prop="code" label="事件代码" width="100" align="center"></el-table-column>
@@ -98,6 +98,7 @@ export default {
           process_state: "已结束"
         }
       ],
+      searchAlertItem: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
@@ -137,8 +138,17 @@ export default {
   },
   methods: {
     getAlertInfo() {
-      // TODO 完善一下查询
       this.loading = false;
+      if (this.filters.input_id === "") {
+        this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
+      } else {
+        this.searchAlertItem = [];
+        for (let item in this.alertItem) {
+          if (JSON.stringify(this.alertItem[item]).search(this.filters.input_id) !== -1) {
+            this.searchAlertItem.push(this.alertItem[item]);
+          }
+        }
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -194,12 +204,13 @@ export default {
         this.loading = true;
         setTimeout(() => {
           this.alertItem.splice(index, 1);
+          this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             company_code: "success"
           });
-        }, 1500);
+        }, 10);
       });
     },
     editSubmit: function() {
@@ -224,13 +235,14 @@ export default {
                 item.process_state = this.editForm.process_state;
               }
             });
+            this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
             this.loading = false;
             this.$message({
               message: "提交成功",
               type: "success"
             });
             this.editFormVisible = false;
-          }, 1500);
+          }, 10);
         });
       });
     },
@@ -253,12 +265,13 @@ export default {
             }
           });
           this.alertItem = tempItem;
+          this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
           this.loading = false;
           this.$message({
             message: "删除成功",
             type: "success"
           });
-        }, 1500);
+        }, 10);
       });
     }
   }
