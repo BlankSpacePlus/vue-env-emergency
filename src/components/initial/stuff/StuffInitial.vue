@@ -67,7 +67,7 @@
 
 <script>
 export default {
-  name: "stuff_initial",
+  name: "staff_initial",
 }
 </script>
 

@@ -5,7 +5,7 @@
         <el-breadcrumb-item :to="{path: '/home-staff/initial'}">工作人员首页</el-breadcrumb-item>
       </el-tooltip>
       <el-breadcrumb-item>城市信息维护</el-breadcrumb-item>
-      <el-breadcrumb-item>城市信息管理</el-breadcrumb-item>
+      <el-breadcrumb-item>交通信息管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
@@ -15,62 +15,36 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" v-on:click="getMaterialInfo">查询</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-circle-plus" @click="addMaterialInfo">添加城市</el-button>
-        </el-form-item>
 <!--        <el-form-item>-->
-<!--          <el-button type="primary" icon="el-icon-circle-plus" @click="addTrafficInfo">添加交通情况</el-button>-->
+<!--          <el-button type="primary" icon="el-icon-circle-plus" @click="addMaterialInfo">添加城市</el-button>-->
 <!--        </el-form-item>-->
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-circle-plus" @click="addTrafficInfo">添加交通情况</el-button>
+        </el-form-item>
       </el-form>
     </el-col>
     <template>
       <el-table ref="multipleTable" :data="searchCityItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
-        <el-table-column prop="name" label="城市名称" width="180" align="center"></el-table-column>
-        <el-table-column prop="code" label="城市编码" width="180" align="center"></el-table-column>
-        <el-table-column prop="province" label="城市所属省份" width="180" align="center"></el-table-column>
-        <el-table-column prop="p_num" label="城市救援人数" width="180" align="center"></el-table-column>
-        <el-table-column prop="car_num" label="城市救援车辆数" width="180" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" min-width="200">
+        <el-table-column prop="name" label="城市名称" width="120" align="center"></el-table-column>
+        <el-table-column prop="start" label="起点" width="120" align="center"></el-table-column>
+        <el-table-column prop="s_type" label="起点类型" width="150" align="center"></el-table-column>
+        <el-table-column prop="end" label="终点" width="120" align="center"></el-table-column>
+        <el-table-column prop="e_type" label="终点类型" width="150" align="center"></el-table-column>
+        <el-table-column prop="length" label="长度" width="120" align="center"></el-table-column>
+        <el-table-column prop="remark" label="备注" width="150" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" min-width="180">
           <template scope="scope">
             <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
-        <el-dialog title="添加城市" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
-          <el-form :model="addCityItem">
-            <el-form-item label="城市ID：" :label-width="formLabelWidth">
-              <el-input v-model="addCityItem.new_id" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="城市名称：" :label-width="formLabelWidth">
-              <el-input maxlength="10" show-word-limit v-model="addCityItem.new_name" style="width: 200px"></el-input>
-            </el-form-item>
-<!--            <el-form-item label="城市编码：" :label-width="formLabelWidth">-->
-<!--              <el-input v-model="addCityItem.new_code" style="width: 200px"></el-input>-->
-<!--            </el-form-item>-->
-            <el-form-item label="城市所属省份：" :label-width="formLabelWidth">
-              <el-input v-model="addCityItem.new_province" style="width: 200px"></el-input>
-            </el-form-item>
-            <el-form-item label="城市救援人数：" :label-width="formLabelWidth">
-<!--              <el-input v-model="addCityItem.new_p_num" style="width: 200px"></el-input>-->
-              <el-input-number v-model="addCityItem.new_p_num" @change="handleChange" :min="1" :max="10000" style="width: 200px"></el-input-number>
-            </el-form-item>
-            <el-form-item label="城市救援车辆数：" :label-width="formLabelWidth">
-<!--              <el-input v-model="addCityItem.new_car_num" style="width: 200px"></el-input>-->
-              <el-input-number v-model="addCityItem.new_car_num" @change="handleChange" :min="1" :max="1000" style="width: 200px"></el-input-number>
 
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible=false">取消</el-button>
-            <el-button type="primary" @click="dialogClick">添加</el-button>
-          </div>
-        </el-dialog>
         <el-dialog title="编辑" :visible.sync="editFormVisible" :append-to-body="true" width="500px" center>
           <el-form :model="editForm" ref="editForm">
             <el-form-item label="城市ID：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.id" style="width: 200px" :readonly="true"></el-input>
+              <el-input v-model="editForm.id" style="width: 200px" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item maxlength="10" show-word-limit label="城市名称：" :label-width="formLabelWidth">
               <el-input v-model="editForm.name" style="width: 200px"></el-input>
@@ -84,12 +58,10 @@
             <el-form-item label="城市救援人数：" :label-width="formLabelWidth">
 <!--              <el-input :value="editForm.p_num" style="width: 200px" :maxlength='8'-->
 <!--                        onkeyup="this.__vue__.currentValue=this.__vue__.currentValue.replace(/[^\d]/g,'')"></el-input>-->
-<!--              <el-input v-model="editForm.p_num" style="width: 200px"></el-input>-->
-              <el-input-number v-model="editForm.p_num" @change="handleChange" :min="1" :max="10000" style="width: 200px"></el-input-number>
+              <el-input v-model="editForm.p_num" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援车辆数：" :label-width="formLabelWidth">
-<!--              <el-input v-model="editForm.car_num" style="width: 200px"></el-input>-->
-              <el-input-number v-model="editForm.car_num" @change="handleChange" :min="1" :max="1000" style="width: 200px"></el-input-number>
+              <el-input v-model="editForm.car_num" style="width: 200px"></el-input>
 <!--              <el-input v-model="editForm.car_num" pattern="^[+]{0,1}(\d+)$" style="width: 200px"></el-input>-->
             </el-form-item>
           </el-form>
@@ -100,27 +72,23 @@
         </el-dialog>
 
 
-        <el-dialog title="添加交通情况" :visible.sync="trafficVisible" width="500px" :append-to-body="true" center>
+
+        <el-dialog title="添加交通情况" :visible.sync="trafficVisible" width="600px" :append-to-body="true" center>
           <el-form :model="addTrafficItem">
-            <el-form-item label="名称：" :label-width="formLabelWidth">
-              <el-input v-model="addTrafficItem.id" style="width: 200px" placeholder="请输入名称"></el-input>
+            <el-form-item label="交通情况ID：" :label-width="formLabelWidth">
+              <el-input v-model="addTrafficItem.id" style="width: 300px"></el-input>
+            </el-form-item>
+            <el-form-item label="城市名称：" :label-width="formLabelWidth">
+              <el-input v-model="addTrafficItem.id" style="width: 300px"></el-input>
             </el-form-item>
             <el-form-item label="起点：" :label-width="formLabelWidth">
 <!--              <el-input v-model="addTrafficItem.start" style="width: 200px" placeholder="请输入起点"></el-input>-->
               <div>
                 <el-input
-                  placeholder="请输入起点"
                   v-model="addTrafficItem.start"
                   class="input-with-select"
-                  style="width: 200px"
+                  style="width: 300px"
                 >
-<!--                  <template #prepend>-->
-<!--                    <el-select v-model="select" placeholder="请选择" style="width: 80px; color: #d7e8fc">-->
-<!--                      <el-option label="餐厅名" value="1"></el-option>-->
-<!--                      <el-option label="订单号" value="2"></el-option>-->
-<!--                      <el-option label="用户电话" value="3"></el-option>-->
-<!--                    </el-select>-->
-<!--                  </template>-->
                   <template #append>
                     <el-select v-model="select" placeholder="企业" style="width: 80px">
                       <el-option label="企业" value="1"></el-option>
@@ -137,10 +105,9 @@
 
               <div>
                 <el-input
-                  placeholder="请输入终点"
                   v-model="addTrafficItem.end"
                   class="input-with-select"
-                  style="width: 200px"
+                  style="width: 300px"
                 >
                   <!--                  <template #prepend>-->
                   <!--                    <el-select v-model="select" placeholder="请选择" style="width: 80px; color: #d7e8fc">-->
@@ -158,16 +125,15 @@
                 </el-input>
               </div>
             </el-form-item>
-            <el-form-item label="长度：" :label-width="formLabelWidth">
+            <el-form-item label="长度(km)：" :label-width="formLabelWidth">
 <!--              <el-input v-model="addTrafficItem.length" style="width: 200px" placeholder="请输入长度(km)"></el-input>-->
-              <el-input-number v-model="addTrafficItem.length" :precision="2" :step="0.1" :max="10" style="width: 200px" placeholder="请输入长度(km)"></el-input-number>
+              <el-input-number v-model="addTrafficItem.length" :precision="2" :step="0.1" :max="10" style="width: 300px"></el-input-number>
             </el-form-item>
             <el-form-item label="备注：" :label-width="formLabelWidth">
               <el-input
                 type="textarea"
                 :rows="2"
-                placeholder="请输入备注"
-                style="width: 200px"
+                style="width: 300px"
                 v-model="textarea">
               </el-input>
             </el-form-item>
@@ -199,51 +165,63 @@ export default {
       cityItem: [
         {
           id: 1,
-          name: "青岛",
-          code: "qingdao",
-          province: "山东",
-          p_num: "1000",
-          car_num: "200"
+          name: "沈阳",
+          start: "和平路4号",
+          s_type: "企业",
+          end: "辽沈路21号",
+          e_type: "物资点",
+          length: "3.23km",
+          remark: "路况不好"
         },
         {
           id: 2,
-          name: "成都",
-          code: "chengdu",
-          province: "四川",
-          p_num: "1200",
-          car_num: "250"
+          name: "沈阳",
+          start: "经纬路1号",
+          s_type: "物资点",
+          end: "浑南路29号",
+          e_type: "物资点",
+          length: "29.12km",
+          remark: "道路拥挤"
         },
         {
           id: 3,
-          name: "厦门",
-          code: "xiamen",
-          province: "福建",
-          p_num: "700",
-          car_num: "220"
+          name: "天津",
+          start: "天大路5号",
+          s_type: "企业",
+          end: "南开路9号",
+          e_type: "物资点",
+          length: "9.01km",
+          remark: "可行驶重型车辆"
         },
         {
           id: 4,
-          name: "北京",
-          code: "beijing",
-          province: "北京",
-          p_num: "3211",
-          car_num: "542"
+          name: "上海",
+          start: "复旦路1号",
+          s_type: "物资点",
+          end: "交大路1号",
+          e_type: "物资点",
+          length: "5.00km",
+          remark: "路面正在维修"
         },
         {
           id: 5,
-          name: "江西",
-          code: "jiangxi",
-          province: "南昌",
-          p_num: "982",
-          car_num: "343"
+          name: "大连",
+          start: "连理路42号",
+          s_type: "企业",
+          end: "航母路11号",
+          e_type: "物资点",
+          length: "34.03km",
+          remark: "无"
         },
         {
           id: 6,
-          name: "广东",
-          code: "guangdong",
-          province: "广州",
-          p_num: "1221",
-          car_num: "569"
+          name: "北京",
+          start: "北大路1号",
+          s_type: "企业",
+          end: "清华路1号",
+          e_type: "企业",
+          length: "6.66km",
+          remark: "道路通畅"
         }
       ],
       searchCityItem: [],
@@ -253,10 +231,12 @@ export default {
       addCityItem: {
         new_id: "",
         new_name: "",
-        new_code: "",
-        new_province: "",
-        new_p_num: "",
-        new_car_num: ""
+        new_start: "",
+        new_s_type: "",
+        new_end: "",
+        new_e_type: "",
+        new_length: "",
+        new_remark: ""
       },
       editFormVisible: false,
       editFormId: 0,
@@ -314,18 +294,22 @@ export default {
       let new_obj = {
         id: this.addCityItem.new_id,
         name: this.addCityItem.new_name,
-        code: this.addCityItem.new_code,
-        province: this.addCityItem.new_province,
-        p_num: this.addCityItem.new_p_num,
-        car_num: this.addCityItem.new_car_num
+        start: this.addCityItem.new_start,
+        s_type: this.addCityItem.new_s_type,
+        end: this.addCityItem.new_end,
+        e_type: this.addCityItem.new_e_type,
+        length: this.addCityItem.new_length,
+        remark: this.addCityItem.new_remark
       };
       this.cityItem.push(new_obj);
       this.addCityItem.new_id = "";
       this.addCityItem.new_name = "";
-      this.addCityItem.new_code = "";
-      this.addCityItem.new_province = "";
-      this.addCityItem.new_p_num = "";
-      this.addCityItem.new_car_num = "";
+      this.addCityItem.new_start = "";
+      this.addCityItem.new_s_type = "";
+      this.addCityItem.new_end = "";
+      this.addCityItem.new_e_type = "";
+      this.addCityItem.new_length = "";
+      this.addCityItem.new_remark = "";
       this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
       this.$message({
         message: "添加成功！",

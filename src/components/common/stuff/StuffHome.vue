@@ -12,7 +12,7 @@
 
 <script>
 import vHead from '../Header.vue';
-import vSidebar from './StuffSidebar';
+import vSidebar from './StaffSidebar';
 export default {
   components:{
     vHead, vSidebar

@@ -163,8 +163,8 @@ export default {
         },
         {
           id: "4",
-          username: "stuff",
-          password: "stuff",
+          username: "staff",
+          password: "staff",
           name: "王喆",
           sex: "男",
           birthday: "1990-12-12",

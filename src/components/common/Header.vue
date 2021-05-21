@@ -50,7 +50,7 @@ export default {
       this.user.icon = "https://img-blog.csdnimg.cn/20210519010649216.jpg";
     } else if (this.user.username === "expert") {
       this.user.icon = "https://img-blog.csdnimg.cn/20210519010649211.jpg";
-    } else if (this.user.username === "stuff") {
+    } else if (this.user.username === "staff") {
       this.user.icon = "https://img-blog.csdnimg.cn/20210519010649197.jpg";
     } else {
       this.user.icon = "../../assets/logo.svg";

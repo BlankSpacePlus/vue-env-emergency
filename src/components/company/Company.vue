@@ -2,7 +2,7 @@
   <section>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
       <el-tooltip content="点我返回首页" placement="bottom" effect="light">
-        <el-breadcrumb-item :to="{path: '/home-stuff/initial'}">工作人员首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path: '/home-staff/initial'}">工作人员首页</el-breadcrumb-item>
       </el-tooltip>
       <el-breadcrumb-item>风险企业信息维护</el-breadcrumb-item>
       <el-breadcrumb-item>风险企业信息管理</el-breadcrumb-item>
@@ -10,7 +10,7 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.input_id" placeholder="请输入风险企业ID"></el-input>
+          <el-input v-model="filters.input_id" placeholder="请输入关键词"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" v-on:click="getCompanyInfo">查询</el-button>
@@ -42,7 +42,7 @@
               <el-input v-model="addCompanyItem.new_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="风险企业名称：" :label-width="formLabelWidth">
-              <el-input maxlength="10" show-word-limit v-model="addCompanyItem.new_name" style="width: 200px"></el-input>
+              <el-input v-model="addCompanyItem.new_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人：" :label-width="formLabelWidth">
               <el-input maxlength="10" show-word-limit v-model="addCompanyItem.new_corporate" style="width: 200px"></el-input>
@@ -71,7 +71,7 @@
         <el-dialog title="编辑" :visible.sync="editFormVisible" :append-to-body="true" width="500px" center>
           <el-form :model="editForm" ref="editForm">
             <el-form-item label="风险企业ID：" :label-width="formLabelWidth">
-              <el-input v-model="editForm.id" style="width: 200px"></el-input>
+              <el-input v-model="editForm.id" style="width: 200px" :readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="风险企业名称：" :label-width="formLabelWidth">
               <el-input maxlength="10" show-word-limit v-model="editForm.name" style="width: 200px"></el-input>
@@ -143,6 +143,33 @@ export default {
           tel: "188288728902",
           location: "南京",
           position: "31N,118E",
+          type: "易燃易爆"
+        },
+        {
+          id: 4,
+          name: "北大印刷厂",
+          corporate: "贝达",
+          tel: "184359822182",
+          location: "北京",
+          position: "46N,901E",
+          type: "易燃"
+        },
+        {
+          id: 5,
+          name: "清华钢铁厂",
+          corporate: "秦化",
+          tel: "13582863181",
+          location: "北京",
+          position: "47N,900E",
+          type: "易爆"
+        },
+        {
+          id: 6,
+          name: "复旦化工厂",
+          corporate: "付丹",
+          tel: "115742728735",
+          location: "上海",
+          position: "33N,298E",
           type: "易燃易爆"
         }
       ],

@@ -11,7 +11,7 @@
           <p class="p2">请输入账号密码进行安全登录</p>
         </div>
         <label style="margin-top: 35px">账号：</label>
-        <el-input placeholder="请输入密码" v-model="user.username" @keyup.enter.native="submit()"></el-input>
+        <el-input placeholder="请输入用户名" v-model="user.username" @keyup.enter.native="submit()"></el-input>
         <label>密码：</label>
         <el-input placeholder="请输入密码" v-model="user.password" show-password @keyup.enter.native="submit()"></el-input>
         <el-tooltip content="点我登录" placement="bottom" effect="light">
@@ -89,7 +89,7 @@ export default {
             type: "success"
           });
         }, 100);
-      } else if (this.user.username === "stuff" && this.user.password === "stuff") {
+      } else if (this.user.username === "staff" && this.user.password === "staff") {
         const loading = this.$loading({
           lock: true,
           target: document.querySelector(".div1")
@@ -98,7 +98,7 @@ export default {
         sessionStorage.setItem("user_identity", this.user.identity);
         setTimeout(() => {
           loading.close();
-          this.$router.push({ path: "/home-stuff/initial" });
+          this.$router.push({ path: "/home-staff/initial" });
           this.$message({
             message: "登陆成功！",
             type: "success"

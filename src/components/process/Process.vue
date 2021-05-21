@@ -2,7 +2,7 @@
   <section>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-bottom: 40px">
       <el-tooltip content="点我返回首页" placement="bottom" effect="light">
-        <el-breadcrumb-item :to="{path: '/home-stuff/initial'}">工作人员首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path: '/home-staff/initial'}">工作人员首页</el-breadcrumb-item>
       </el-tooltip>
       <el-breadcrumb-item>流程信息维护</el-breadcrumb-item>
       <el-breadcrumb-item>流程信息管理</el-breadcrumb-item>

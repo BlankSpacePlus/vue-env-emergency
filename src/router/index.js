@@ -6,16 +6,16 @@ import Auth from "../components/Auth"
 import AdminHome from "../components/common/admin/AdminHome";
 import CommanderHome from "../components/common/commander/CommanderHome"
 import ExpertHome from "../components/common/expert/ExpertHome"
-import StuffHome from "../components/common/stuff/StuffHome"
+import StaffHome from "../components/common/staff/StaffHome"
 
 import AdminInitial from "../components/initial/admin/AdminInitial";
 import CommanderInitial from "../components/initial/commander/CommanderInitial";
 import ExpertInitial from "../components/initial/expert/ExpertInitial";
-import StuffInitial from "../components/initial/stuff/StuffInitial";
+import StaffInitial from "../components/initial/staff/StaffInitial";
 
 import CommanderAlert from "../components/alert/commander/CommanderAlert";
 import ExpertAlert from "../components/alert/expert/ExpertAlert";
-import StuffAlert from "../components/alert/stuff/StuffAlert";
+import StaffAlert from "../components/alert/staff/StaffAlert";
 
 import Register from "../components/register/Register";
 import Emergency from "../components/emergency/Emergency";
@@ -23,6 +23,7 @@ import Material from "../components/material/Material";
 import MaterialLocation from "../components/material/MaterialLocation";
 import Company from "../components/company/Company";
 import City from "../components/city/City";
+import Traffic from "../components/city/Traffic"
 import Process from "../components/process/Process";
 
 Vue.use(Router);
@@ -112,61 +113,68 @@ export default new Router({
       ]
     },
     {
-      path: '/home-stuff',
-      component: StuffHome,
+      path: '/home-staff',
+      component: StaffHome,
       children: [
         {
-          path: '/home-stuff/initial',
-          component: StuffInitial,
+          path: '/home-staff/initial',
+          component: StaffInitial,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/emergency',
+          path: '/home-staff/emergency',
           component: Emergency,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/material',
+          path: '/home-staff/material',
           component: Material,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/material-location',
+          path: '/home-staff/material-location',
           component: MaterialLocation,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/process',
+          path: '/home-staff/process',
           component: Process,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/company',
+          path: '/home-staff/company',
           component: Company,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/city',
+          path: '/home-staff/city',
           component: City,
           meta: {
             title: "环保应急管理系统"
           }
         },
         {
-          path: '/home-stuff/alert',
-          component: StuffAlert,
+          path: '/home-staff/traffic',
+          component: Traffic,
+          meta: {
+            title: "环保应急管理系统"
+          }
+        },
+        {
+          path: '/home-staff/alert',
+          component: StaffAlert,
           meta: {
             title: "环保应急管理系统"
           }
