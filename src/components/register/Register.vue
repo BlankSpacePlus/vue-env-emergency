@@ -10,7 +10,7 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.input_id" placeholder="请输入用户ID"></el-input>
+          <el-input v-model="filters.input_id" placeholder="请输入关键词"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" v-on:click="getUserInfo">查询</el-button>

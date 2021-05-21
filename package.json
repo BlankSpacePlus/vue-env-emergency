@@ -17,8 +17,9 @@
     "bootstrap-vue": "^2.0.0-rc.26",
     "core-js": "^2.6.5",
     "echarts": "^4.2.1",
-    "qs": "latest",
+    "element-china-area-data": "^5.0.2",
     "highlight.js": "^9.12.0",
+    "qs": "latest",
     "vue": "^2.5.2",
     "vue-echarts-v3": "^2.0.1",
     "vue-router": "^3.0.1"
@@ -90,5 +91,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": "index.js",
+  "repository": "https://github.com/ChenYikunReal/env-emergency-manage",
+  "license": "MIT"
 }

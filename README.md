@@ -28,3 +28,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 # 说明
 1. Tree控件参考自[Github](https://github.com/xiaoniezi/vue-tree)
 2. 解决`<el-avatar>`头像切换不显示问题参考自[这篇博文](https://blog.csdn.net/weixin_46096901/article/details/105791636)
+3. 导入中国省市区数据可以参考[Github项目](https://github.com/airyland/china-area-data)，引入方法为`cnpm install element-china-area-data -S`
