@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchProcessItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchProcessList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="流程名称" width="150" align="center"></el-table-column>
@@ -30,29 +30,29 @@
         <el-table-column prop="detail" label="流程内容" width="300" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加流程" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
           <el-form :model="addProcessItem">
             <el-form-item label="流程ID：" :label-width="formLabelWidth">
-              <el-input v-model="addProcessItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addProcessItem.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程名称：" :label-width="formLabelWidth">
-              <el-input v-model="addProcessItem.new_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
+              <el-input v-model="addProcessItem.name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程类型：" :label-width="formLabelWidth">
-              <el-select v-model="addProcessItem.new_type" placeholder="请选择流程类型" style="width: 200px">
+              <el-select v-model="addProcessItem.type" placeholder="请选择流程类型" style="width: 200px">
                 <el-option value="流程" label="流程">流程</el-option>
                 <el-option value="模板" label="模板">模板</el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="流程编码：" :label-width="formLabelWidth">
-              <el-input v-model="addProcessItem.new_code" style="width: 200px"></el-input>
+              <el-input v-model="addProcessItem.code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程内容：" :label-width="formLabelWidth">
-              <el-input type="textarea" maxlength="30" show-word-limit v-model="addProcessItem.new_detail" style="width: 200px"></el-input>
+              <el-input type="textarea" maxlength="30" show-word-limit v-model="addProcessItem.detail" style="width: 200px"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -88,7 +88,9 @@
         </el-dialog>
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -103,7 +105,7 @@ export default {
         input_id: "",
       },
       loading: false,
-      processItem: [
+      processList: [
         {
           id: 1,
           name: "流程一",
@@ -126,16 +128,16 @@ export default {
           detail: "天天写作业烦不烦啊"
         }
       ],
-      searchProcessItem: [],
+      searchProcessList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addProcessItem: {
-        new_id: "",
-        new_name: "",
-        new_type: "",
-        new_code: "",
-        new_detail: ""
+        id: "",
+        name: "",
+        type: "",
+        code: "",
+        detail: ""
       },
       editFormVisible: false,
       editFormId: 0,
@@ -152,12 +154,12 @@ export default {
     getProcessInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
+        this.searchProcessList = JSON.parse(JSON.stringify(this.processList));
       } else {
-        this.searchProcessItem = [];
-        for (let item in this.processItem) {
-          if (JSON.stringify(this.processItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchProcessItem.push(this.processItem[item]);
+        this.searchProcessList = [];
+        for (let item in this.processList) {
+          if (JSON.stringify(this.processList[item]).search(this.filters.input_id) !== -1) {
+            this.searchProcessList.push(this.processList[item]);
           }
         }
       }
@@ -170,20 +172,13 @@ export default {
     },
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addProcessItem.new_id,
-        name: this.addProcessItem.new_name,
-        type: this.addProcessItem.new_type,
-        code: this.addProcessItem.new_code,
-        detail: this.addProcessItem.new_detail,
-      };
-      this.processItem.push(new_obj);
-      this.addProcessItem.new_id = "";
-      this.addProcessItem.new_name = "";
-      this.addProcessItem.new_type = "";
-      this.addProcessItem.new_code = "";
-      this.addProcessItem.new_detail = "";
-      this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
+      this.processList.push(JSON.parse(JSON.stringify(this.addProcessItem)));
+      this.getProcessInfo();
+      this.addProcessItem.id = "";
+      this.addProcessItem.name = "";
+      this.addProcessItem.type = "";
+      this.addProcessItem.code = "";
+      this.addProcessItem.detail = "";
       this.$message({
         message: "添加成功！",
         type: "success"
@@ -200,8 +195,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.processItem.splice(index, 1);
-          this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
+          this.processList.splice(index, 1);
+          this.searchProcessList = JSON.parse(JSON.stringify(this.processList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -215,7 +210,7 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.processItem.forEach(item => {
+            this.processList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.name = this.editForm.name;
@@ -224,7 +219,7 @@ export default {
                 item.detail = this.editForm.detail;
               }
             });
-            this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
+            this.searchProcessList = JSON.parse(JSON.stringify(this.processList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -242,7 +237,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.processItem.forEach(item => {
+          this.processList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -253,8 +248,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.processItem = tempItem;
-          this.searchProcessItem = JSON.parse(JSON.stringify(this.processItem));
+          this.processList = tempItem;
+          this.searchProcessList = JSON.parse(JSON.stringify(this.processList));
           this.loading = false;
           this.$message({
             message: "删除成功",

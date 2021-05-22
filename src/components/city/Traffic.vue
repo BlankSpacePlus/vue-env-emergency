@@ -15,16 +15,13 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" v-on:click="getMaterialInfo">查询</el-button>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-button type="primary" icon="el-icon-circle-plus" @click="addMaterialInfo">添加城市</el-button>-->
-<!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" icon="el-icon-circle-plus" @click="addTrafficInfo">添加交通情况</el-button>
         </el-form-item>
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchCityItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchTrafficList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="城市名称" width="120" align="center"></el-table-column>
@@ -36,11 +33,10 @@
         <el-table-column prop="remark" label="备注" width="150" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="180">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
-
         <el-dialog title="编辑" :visible.sync="editFormVisible" :append-to-body="true" width="500px" center>
           <el-form :model="editForm" ref="editForm">
             <el-form-item label="城市ID：" :label-width="formLabelWidth">
@@ -56,13 +52,10 @@
               <el-input v-model="editForm.province" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援人数：" :label-width="formLabelWidth">
-<!--              <el-input :value="editForm.p_num" style="width: 200px" :maxlength='8'-->
-<!--                        onkeyup="this.__vue__.currentValue=this.__vue__.currentValue.replace(/[^\d]/g,'')"></el-input>-->
               <el-input v-model="editForm.p_num" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="城市救援车辆数：" :label-width="formLabelWidth">
               <el-input v-model="editForm.car_num" style="width: 200px"></el-input>
-<!--              <el-input v-model="editForm.car_num" pattern="^[+]{0,1}(\d+)$" style="width: 200px"></el-input>-->
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -70,9 +63,6 @@
             <el-button type="primary" @click.native="editSubmit">提交</el-button>
           </div>
         </el-dialog>
-
-
-
         <el-dialog title="添加交通情况" :visible.sync="trafficVisible" width="600px" :append-to-body="true" center>
           <el-form :model="addTrafficItem">
             <el-form-item label="交通情况ID：" :label-width="formLabelWidth">
@@ -82,13 +72,8 @@
               <el-input v-model="addTrafficItem.id" style="width: 300px"></el-input>
             </el-form-item>
             <el-form-item label="起点：" :label-width="formLabelWidth">
-<!--              <el-input v-model="addTrafficItem.start" style="width: 200px" placeholder="请输入起点"></el-input>-->
               <div>
-                <el-input
-                  v-model="addTrafficItem.start"
-                  class="input-with-select"
-                  style="width: 300px"
-                >
+                <el-input v-model="addTrafficItem.start" class="input-with-select" style="width: 300px">
                   <template #append>
                     <el-select v-model="select" placeholder="企业" style="width: 80px">
                       <el-option label="企业" value="1"></el-option>
@@ -97,25 +82,10 @@
                   </template>
                 </el-input>
               </div>
-
-
             </el-form-item>
             <el-form-item label="终点：" :label-width="formLabelWidth">
-<!--              <el-input v-model="addTrafficItem.end" style="width: 200px" placeholder="请输入终点"></el-input>-->
-
               <div>
-                <el-input
-                  v-model="addTrafficItem.end"
-                  class="input-with-select"
-                  style="width: 300px"
-                >
-                  <!--                  <template #prepend>-->
-                  <!--                    <el-select v-model="select" placeholder="请选择" style="width: 80px; color: #d7e8fc">-->
-                  <!--                      <el-option label="餐厅名" value="1"></el-option>-->
-                  <!--                      <el-option label="订单号" value="2"></el-option>-->
-                  <!--                      <el-option label="用户电话" value="3"></el-option>-->
-                  <!--                    </el-select>-->
-                  <!--                  </template>-->
+                <el-input v-model="addTrafficItem.end" class="input-with-select" style="width: 300px">
                   <template #append>
                     <el-select v-model="select" placeholder="企业" style="width: 80px">
                       <el-option label="企业" value="1"></el-option>
@@ -126,16 +96,10 @@
               </div>
             </el-form-item>
             <el-form-item label="长度(km)：" :label-width="formLabelWidth">
-<!--              <el-input v-model="addTrafficItem.length" style="width: 200px" placeholder="请输入长度(km)"></el-input>-->
               <el-input-number v-model="addTrafficItem.length" :precision="2" :step="0.1" :max="10" style="width: 300px"></el-input-number>
             </el-form-item>
             <el-form-item label="备注：" :label-width="formLabelWidth">
-              <el-input
-                type="textarea"
-                :rows="2"
-                style="width: 300px"
-                v-model="textarea">
-              </el-input>
+              <el-input type="textarea" :rows="2" style="width: 300px" v-model="textarea"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -143,11 +107,11 @@
             <el-button type="primary">添加</el-button>
           </div>
         </el-dialog>
-
-
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -162,7 +126,7 @@ export default {
         input_id: "",
       },
       loading: false,
-      cityItem: [
+      trafficList: [
         {
           id: 1,
           name: "沈阳",
@@ -224,19 +188,19 @@ export default {
           remark: "道路通畅"
         }
       ],
-      searchCityItem: [],
+      searchTrafficList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addCityItem: {
-        new_id: "",
-        new_name: "",
-        new_start: "",
-        new_s_type: "",
-        new_end: "",
-        new_e_type: "",
-        new_length: "",
-        new_remark: ""
+        id: "",
+        name: "",
+        start: "",
+        s_type: "",
+        end: "",
+        e_type: "",
+        length: "",
+        remark: ""
       },
       editFormVisible: false,
       editFormId: 0,
@@ -248,8 +212,6 @@ export default {
         p_num: "",
         car_num: ""
       },
-
-
       trafficVisible: false,
       addTrafficItem: {
         id: "",
@@ -264,12 +226,12 @@ export default {
     getMaterialInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+        this.searchTrafficList = JSON.parse(JSON.stringify(this.trafficList));
       } else {
-        this.searchCityItem = [];
-        for (let item in this.cityItem) {
-          if (JSON.stringify(this.cityItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchCityItem.push(this.cityItem[item]);
+        this.searchTrafficList = [];
+        for (let item in this.trafficList) {
+          if (JSON.stringify(this.trafficList[item]).search(this.filters.input_id) !== -1) {
+            this.searchTrafficList.push(this.trafficList[item]);
           }
         }
       }
@@ -280,37 +242,31 @@ export default {
     addMaterialInfo() {
       this.dialogFormVisible = true;
     },
-
-
     addTrafficInfo() {
       this.trafficVisible = true;
     },
-
-
-
-
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addCityItem.new_id,
-        name: this.addCityItem.new_name,
-        start: this.addCityItem.new_start,
-        s_type: this.addCityItem.new_s_type,
-        end: this.addCityItem.new_end,
-        e_type: this.addCityItem.new_e_type,
-        length: this.addCityItem.new_length,
-        remark: this.addCityItem.new_remark
+      let obj = {
+        id: this.addCityItem.id,
+        name: this.addCityItem.name,
+        start: this.addCityItem.start,
+        s_type: this.addCityItem.s_type,
+        end: this.addCityItem.end,
+        e_type: this.addCityItem.e_type,
+        length: this.addCityItem.length,
+        remark: this.addCityItem.remark
       };
-      this.cityItem.push(new_obj);
-      this.addCityItem.new_id = "";
-      this.addCityItem.new_name = "";
-      this.addCityItem.new_start = "";
-      this.addCityItem.new_s_type = "";
-      this.addCityItem.new_end = "";
-      this.addCityItem.new_e_type = "";
-      this.addCityItem.new_length = "";
-      this.addCityItem.new_remark = "";
-      this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+      this.trafficList.push(obj);
+      this.addCityItem.id = "";
+      this.addCityItem.name = "";
+      this.addCityItem.start = "";
+      this.addCityItem.s_type = "";
+      this.addCityItem.end = "";
+      this.addCityItem.e_type = "";
+      this.addCityItem.length = "";
+      this.addCityItem.remark = "";
+      this.searchTrafficList = JSON.parse(JSON.stringify(this.trafficList));
       this.$message({
         message: "添加成功！",
         code: "success"
@@ -327,8 +283,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.cityItem.splice(index, 1);
-          this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+          this.trafficList.splice(index, 1);
+          this.searchTrafficList = JSON.parse(JSON.stringify(this.trafficList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -342,7 +298,7 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.cityItem.forEach(item => {
+            this.trafficList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.name = this.editForm.name;
@@ -352,7 +308,7 @@ export default {
                 item.car_num = this.editForm.car_num;
               }
             });
-            this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+            this.searchTrafficList = JSON.parse(JSON.stringify(this.trafficList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -370,7 +326,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.cityItem.forEach(item => {
+          this.trafficList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -381,8 +337,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.cityItem = tempItem;
-          this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+          this.trafficList = tempItem;
+          this.searchTrafficList = JSON.parse(JSON.stringify(this.trafficList));
           this.loading = false;
           this.$message({
             message: "删除成功",

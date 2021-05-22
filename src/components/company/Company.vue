@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchCompanyItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchCompanyList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="风险企业名称" width="150" align="center"></el-table-column>
@@ -32,32 +32,32 @@
         <el-table-column prop="type" label="企业类型" width="150" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加风险企业" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
           <el-form :model="addCompanyItem">
             <el-form-item label="风险企业ID：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addCompanyItem.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="风险企业名称：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_name" style="width: 200px"></el-input>
+              <el-input v-model="addCompanyItem.name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人：" :label-width="formLabelWidth">
-              <el-input maxlength="10" show-word-limit v-model="addCompanyItem.new_corporate" style="width: 200px"></el-input>
+              <el-input maxlength="10" show-word-limit v-model="addCompanyItem.corporate" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业法人联系方式：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_tel" style="width: 200px"></el-input>
+              <el-input v-model="addCompanyItem.tel" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业位置：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_location" style="width: 200px"></el-input>
+              <el-input v-model="addCompanyItem.location" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业经纬度：" :label-width="formLabelWidth">
-              <el-input v-model="addCompanyItem.new_position" style="width: 200px"></el-input>
+              <el-input v-model="addCompanyItem.position" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="企业类型：" :label-width="formLabelWidth">
-              <el-select v-model="addCompanyItem.new_type" placeholder="请选择企业风险类型" style="width: 200px">
+              <el-select v-model="addCompanyItem.type" placeholder="请选择企业风险类型" style="width: 200px">
                 <el-option value="易燃易爆" label="易燃易爆">易燃易爆</el-option>
                 <el-option value="易发生产事故" label="易发生产事故">易发生产事故</el-option>
               </el-select>
@@ -102,7 +102,9 @@
         </el-dialog>
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -117,7 +119,7 @@ export default {
         input_id: "",
       },
       loading: false,
-      companyItem: [
+      companyList: [
         {
           id: 1,
           name: "QAQ毛纺厂",
@@ -173,18 +175,18 @@ export default {
           type: "易燃易爆"
         }
       ],
-      searchCompanyItem: [],
+      searchCompanyList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addCompanyItem: {
-        new_id: "",
-        new_name: "",
-        new_corporate: "",
-        new_tel: "",
-        new_location: "",
-        new_position: "",
-        new_type: ""
+        id: "",
+        name: "",
+        corporate: "",
+        tel: "",
+        location: "",
+        position: "",
+        type: ""
       },
       editFormVisible: false,
       editFormId: 0,
@@ -203,12 +205,12 @@ export default {
     getCompanyInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
+        this.searchCompanyList = JSON.parse(JSON.stringify(this.companyList));
       } else {
-        this.searchCompanyItem = [];
-        for (let item in this.companyItem) {
-          if (JSON.stringify(this.companyItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchCompanyItem.push(this.companyItem[item]);
+        this.searchCompanyList = [];
+        for (let item in this.companyList) {
+          if (JSON.stringify(this.companyList[item]).search(this.filters.input_id) !== -1) {
+            this.searchCompanyList.push(this.companyList[item]);
           }
         }
       }
@@ -221,24 +223,24 @@ export default {
     },
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addCompanyItem.new_id,
-        name: this.addCompanyItem.new_name,
-        corporate: this.addCompanyItem.new_corporate,
-        tel: this.addCompanyItem.new_tel,
-        location: this.addCompanyItem.new_location,
-        position: this.addCompanyItem.new_position,
-        type: this.addCompanyItem.new_type
+      let obj = {
+        id: this.addCompanyItem.id,
+        name: this.addCompanyItem.name,
+        corporate: this.addCompanyItem.corporate,
+        tel: this.addCompanyItem.tel,
+        location: this.addCompanyItem.location,
+        position: this.addCompanyItem.position,
+        type: this.addCompanyItem.type
       };
-      this.companyItem.push(new_obj);
-      this.addCompanyItem.new_id = "";
-      this.addCompanyItem.new_name = "";
-      this.addCompanyItem.new_corporate = "";
-      this.addCompanyItem.new_tel = "";
-      this.addCompanyItem.new_location = "";
-      this.addCompanyItem.new_position = "";
-      this.addCompanyItem.new_type = "";
-      this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
+      this.companyList.push(obj);
+      this.addCompanyItem.id = "";
+      this.addCompanyItem.name = "";
+      this.addCompanyItem.corporate = "";
+      this.addCompanyItem.tel = "";
+      this.addCompanyItem.location = "";
+      this.addCompanyItem.position = "";
+      this.addCompanyItem.type = "";
+      this.searchCompanyList = JSON.parse(JSON.stringify(this.companyList));
       this.$message({
         message: "添加成功！",
         corporate: "success"
@@ -255,8 +257,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.companyItem.splice(index, 1);
-          this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
+          this.companyList.splice(index, 1);
+          this.searchCompanyList = JSON.parse(JSON.stringify(this.companyList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -270,7 +272,7 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.companyItem.forEach(item => {
+            this.companyList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.name = this.editForm.name;
@@ -281,7 +283,7 @@ export default {
                 item.type = this.editForm.type;
               }
             });
-            this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
+            this.searchCompanyList = JSON.parse(JSON.stringify(this.companyList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -299,7 +301,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.companyItem.forEach(item => {
+          this.companyList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -310,8 +312,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.companyItem = tempItem;
-          this.searchCompanyItem = JSON.parse(JSON.stringify(this.companyItem));
+          this.companyList = tempItem;
+          this.searchCompanyList = JSON.parse(JSON.stringify(this.companyList));
           this.loading = false;
           this.$message({
             message: "删除成功",

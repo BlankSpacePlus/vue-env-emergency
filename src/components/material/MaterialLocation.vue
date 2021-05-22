@@ -21,27 +21,27 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchMaterialItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchMaterialLocationList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="p_name" label="物资位置名称" width="300" align="center"></el-table-column>
         <el-table-column prop="m_name" label="物资内容" width="600" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加物资位置" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
           <el-form :model="addMaterialItem">
             <el-form-item label="物资位置ID：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资位置名称：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_p_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.p_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资内容：" :label-width="formLabelWidth">
-              <el-input type="textarea" maxlength="30" show-word-limit v-model="addMaterialItem.new_m_name" style="width: 200px"></el-input>
+              <el-input type="textarea" maxlength="30" show-word-limit v-model="addMaterialItem.m_name" style="width: 200px"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -68,7 +68,9 @@
         </el-dialog>
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -83,7 +85,7 @@ export default {
         input_id: "",
       },
       loading: false,
-      materialItem: [
+      materialLocationList: [
         {
           id: 1,
           p_name: "补给三件套",
@@ -100,14 +102,14 @@ export default {
           m_name: "歪比巴卜,歪比歪比"
         }
       ],
-      searchMaterialItem: [],
+      searchMaterialLocationList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addMaterialItem: {
-        new_id: "",
-        new_p_name: "",
-        new_m_name: "",
+        id: "",
+        p_name: "",
+        m_name: "",
       },
       editFormVisible: false,
       editFormId: 0,
@@ -122,12 +124,12 @@ export default {
     getMaterialInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+        this.searchMaterialLocationList = JSON.parse(JSON.stringify(this.materialLocationList));
       } else {
-        this.searchMaterialItem = [];
-        for (let item in this.materialItem) {
-          if (JSON.stringify(this.materialItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchMaterialItem.push(this.materialItem[item]);
+        this.searchMaterialLocationList = [];
+        for (let item in this.materialLocationList) {
+          if (JSON.stringify(this.materialLocationList[item]).search(this.filters.input_id) !== -1) {
+            this.searchMaterialLocationList.push(this.materialLocationList[item]);
           }
         }
       }
@@ -140,16 +142,16 @@ export default {
     },
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addMaterialItem.new_id,
-        m_name: this.addMaterialItem.new_m_name,
-        p_name: this.addMaterialItem.new_p_name
+      let obj = {
+        id: this.addMaterialItem.id,
+        m_name: this.addMaterialItem.m_name,
+        p_name: this.addMaterialItem.p_name
       };
-      this.materialItem.push(new_obj);
-      this.addMaterialItem.new_id = "";
-      this.addMaterialItem.new_m_name = "";
-      this.addMaterialItem.new_p_name = "";
-      this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+      this.materialLocationList.push(obj);
+      this.addMaterialItem.id = "";
+      this.addMaterialItem.m_name = "";
+      this.addMaterialItem.p_name = "";
+      this.searchMaterialLocationList = JSON.parse(JSON.stringify(this.materialLocationList));
       this.$message({
         message: "添加成功！",
         type: "success"
@@ -166,8 +168,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.materialItem.splice(index, 1);
-          this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+          this.materialLocationList.splice(index, 1);
+          this.searchMaterialLocationList = JSON.parse(JSON.stringify(this.materialLocationList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -181,14 +183,14 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.materialItem.forEach(item => {
+            this.materialLocationList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.m_name = this.editForm.m_name;
                 item.p_name = this.editForm.p_name;
               }
             });
-            this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+            this.searchMaterialLocationList = JSON.parse(JSON.stringify(this.materialLocationList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -206,7 +208,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.materialItem.forEach(item => {
+          this.materialLocationList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -217,8 +219,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.materialItem = tempItem;
-          this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+          this.materialLocationList = tempItem;
+          this.searchMaterialLocationList = JSON.parse(JSON.stringify(this.materialLocationList));
           this.loading = false;
           this.$message({
             message: "删除成功",

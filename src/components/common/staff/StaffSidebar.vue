@@ -50,7 +50,6 @@ export default {
   bottom: 0;
 }
 .el-menu-vertical-demo {
-  background: #d3dce6;
   background: white;
   filter:alpha(Opacity=85);
   -moz-opacity:0.75;

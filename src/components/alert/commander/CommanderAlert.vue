@@ -19,7 +19,6 @@
     </el-col>
     <template>
       <el-table ref="multipleTable" :data="searchAlertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="30"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="emergency_name" label="事件名称" width="100" align="center"></el-table-column>
         <el-table-column prop="company_code" label="企业编号" width="100" align="center"></el-table-column>

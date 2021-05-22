@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchAlertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchAlertList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="emergency_name" label="事件名称" width="100" align="center"></el-table-column>
@@ -38,53 +38,53 @@
         <el-table-column prop="process_state" label="流程状态" width="100" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加接报" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
           <el-form :model="addAlertItem">
             <el-form-item label="接报ID：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="接报名称：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_emergency_name" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.emergency_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="风险企业编号：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_company_code" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.company_code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="事件代码：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_code" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程ID：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_process_id" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.process_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="报警人：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_p_name" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.p_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="报警人联系电话：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_p_tel" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.p_tel" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="接报时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择接报时间" v-model="addAlertItem.new_alert_time" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+              <el-date-picker type="date" placeholder="选择接报时间" v-model="addAlertItem.alert_time" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="流程创建者：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_process_p_name" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.process_p_name" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="流程创建时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择流程创建时间" v-model="addAlertItem.new_process_create" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+              <el-date-picker type="date" placeholder="选择流程创建时间" v-model="addAlertItem.process_create" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="最后更新者编号：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_update_id" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.update_id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="最后更新时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择最后更新时间" v-model="addAlertItem.new_process_update" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+              <el-date-picker type="date" placeholder="选择最后更新时间" v-model="addAlertItem.process_update" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="流程状态：" :label-width="formLabelWidth">
-              <el-input v-model="addAlertItem.new_process_state" style="width: 200px"></el-input>
+              <el-input v-model="addAlertItem.process_state" style="width: 200px"></el-input>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -144,7 +144,9 @@
         </el-dialog>
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -159,7 +161,7 @@ export default {
         input_id: "",
       },
       loading: false,
-      alertItem: [
+      alertList: [
         {
           id: 1,
           emergency_name: "事件1",
@@ -206,24 +208,24 @@ export default {
           process_state: "待审批"
         }
       ],
-      searchAlertItem: [],
+      searchAlertList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addAlertItem: {
-        new_id: "",
-        new_emergency_name: "",
-        new_company_code: "",
-        new_code: "",
-        new_process_id: "",
-        new_p_name: "",
-        new_p_tel: "",
-        new_alert_time: "",
-        new_process_p_name: "",
-        new_process_create: "",
-        new_update_id: "",
-        new_process_update: "",
-        new_process_state: ""
+        id: "",
+        emergency_name: "",
+        company_code: "",
+        code: "",
+        process_id: "",
+        p_name: "",
+        p_tel: "",
+        alert_time: "",
+        process_p_name: "",
+        process_create: "",
+        update_id: "",
+        process_update: "",
+        process_state: ""
       },
       editFormVisible: false,
       editFormId: 0,
@@ -248,12 +250,12 @@ export default {
     getAlertInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
+        this.searchAlertList = JSON.parse(JSON.stringify(this.alertList));
       } else {
-        this.searchAlertItem = [];
-        for (let item in this.alertItem) {
-          if (JSON.stringify(this.alertItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchAlertItem.push(this.alertItem[item]);
+        this.searchAlertList = [];
+        for (let item in this.alertList) {
+          if (JSON.stringify(this.alertList[item]).search(this.filters.input_id) !== -1) {
+            this.searchAlertList.push(this.alertList[item]);
           }
         }
       }
@@ -266,35 +268,35 @@ export default {
     },
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addAlertItem.new_id,
-        emergency_name: this.addAlertItem.new_emergency_name,
-        company_code: this.addAlertItem.new_company_code,
-        code: this.addAlertItem.new_code,
-        process_id: this.addAlertItem.new_process_id,
-        p_name: this.addAlertItem.new_p_name,
-        p_tel: this.addAlertItem.new_p_tel,
-        alert_time: this.addAlertItem.new_alert_time,
-        process_p_name: this.addAlertItem.new_process_p_name,
-        process_create: this.addAlertItem.new_process_create,
-        update_id: this.addAlertItem.new_update_id,
-        process_update: this.addAlertItem.new_process_update,
-        process_state: this.addAlertItem.new_process_state
+      let obj = {
+        id: this.addAlertItem.id,
+        emergency_name: this.addAlertItem.emergency_name,
+        company_code: this.addAlertItem.company_code,
+        code: this.addAlertItem.code,
+        process_id: this.addAlertItem.process_id,
+        p_name: this.addAlertItem.p_name,
+        p_tel: this.addAlertItem.p_tel,
+        alert_time: this.addAlertItem.alert_time,
+        process_p_name: this.addAlertItem.process_p_name,
+        process_create: this.addAlertItem.process_create,
+        update_id: this.addAlertItem.update_id,
+        process_update: this.addAlertItem.process_update,
+        process_state: this.addAlertItem.process_state
       };
-      this.alertItem.push(new_obj);
-      this.addAlertItem.new_id = "";
-      this.addAlertItem.new_emergency_name = "";
-      this.addAlertItem.new_company_code = "";
-      this.addAlertItem.new_code = "";
-      this.addAlertItem.new_process_id = "";
-      this.addAlertItem.new_p_name = "";
-      this.addAlertItem.new_p_tel = "";
-      this.addAlertItem.new_alert_time = "";
-      this.addAlertItem.new_process_p_name = "";
-      this.addAlertItem.new_process_create = "";
-      this.addAlertItem.new_update_id = "";
-      this.addAlertItem.new_process_update = "";
-      this.addAlertItem.new_process_state = ""
+      this.alertList.push(obj);
+      this.addAlertItem.id = "";
+      this.addAlertItem.emergency_name = "";
+      this.addAlertItem.company_code = "";
+      this.addAlertItem.code = "";
+      this.addAlertItem.process_id = "";
+      this.addAlertItem.p_name = "";
+      this.addAlertItem.p_tel = "";
+      this.addAlertItem.alert_time = "";
+      this.addAlertItem.process_p_name = "";
+      this.addAlertItem.process_create = "";
+      this.addAlertItem.update_id = "";
+      this.addAlertItem.process_update = "";
+      this.addAlertItem.process_state = ""
       this.$message({
         message: "添加成功！",
         company_code: "success"
@@ -311,8 +313,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.alertItem.splice(index, 1);
-          this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
+          this.alertList.splice(index, 1);
+          this.searchAlertList = JSON.parse(JSON.stringify(this.alertList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -326,11 +328,11 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.alertItem.forEach(item => {
+            this.alertList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.emergency_name = this.editForm.emergency_name;
-                item.new_code = this.editForm.code;
+                item.code = this.editForm.code;
                 item.company_code = this.editForm.company_code;
                 item.process_id = this.editForm.process_id;
                 item.p_name = this.editForm.p_name;
@@ -343,7 +345,7 @@ export default {
                 item.process_state = this.editForm.process_state;
               }
             });
-            this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
+            this.searchAlertList = JSON.parse(JSON.stringify(this.alertList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -361,7 +363,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.alertItem.forEach(item => {
+          this.alertList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -372,8 +374,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.alertItem = tempItem;
-          this.searchAlertItem = JSON.parse(JSON.stringify(this.alertItem));
+          this.alertList = tempItem;
+          this.searchAlertList = JSON.parse(JSON.stringify(this.alertList));
           this.loading = false;
           this.$message({
             message: "删除成功",

@@ -5,7 +5,7 @@
         <img class="logo" src="../../assets/logo.svg" alt="图片不见啦"/>
         环保应急管理系统
       </div>
-    </el-col :span="18">
+    </el-col>
     <el-col :span="6">
       <div class="user-info">
         <el-dropdown style="float: right" @command="handleCommand">
@@ -14,9 +14,9 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="logout" v-text="user.identity + ' - ' + user.username" disabled="true" style="color: #364766"></el-dropdown-item>
-            <el-tooltip content="点我退出" placement="bottom" effect="light">
-              <el-dropdown-item command="logout" icon="el-icon-switch-button" divided="true">退出登录</el-dropdown-item>
-            </el-tooltip>
+            <el-dropdown-item command="home" icon="el-icon-user-solid" divided="true">我的主页</el-dropdown-item>
+            <el-dropdown-item command="set" icon="el-icon-setting" divided="true">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout" icon="el-icon-switch-button" divided="true">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

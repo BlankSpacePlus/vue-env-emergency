@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchCityItem" highlight-current-row v-loading="loading"
+      <el-table ref="multipleTable" :data="searchCityList" highlight-current-row v-loading="loading"
                 tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
@@ -32,23 +32,23 @@
         <el-table-column prop="car_num" label="城市救援车辆数" width="180" align="center"></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加城市" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
           <el-form :model="addCityItem">
             <el-form-item label="城市ID：" :label-width="formLabelWidth">
-              <el-input v-model="addCityItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addCityItem.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="省市选择：" :label-width="formLabelWidth">
               <el-cascader size="large" :options="city_options" style="width:200px" v-model="addCityItem.selectedOptions" @change="addAddressChange"></el-cascader>
             </el-form-item>
             <el-form-item label="城市救援人数：" :label-width="formLabelWidth">
-              <el-input-number v-model="addCityItem.new_p_num" :min="1" :max="10000" style="width: 200px"></el-input-number>
+              <el-input-number v-model="addCityItem.p_num" :min="1" :max="10000" style="width: 200px"></el-input-number>
             </el-form-item>
             <el-form-item label="城市救援车辆数：" :label-width="formLabelWidth">
-              <el-input-number v-model="addCityItem.new_car_num" :min="1" :max="1000" style="width: 200px"></el-input-number>
+              <el-input-number v-model="addCityItem.car_num" :min="1" :max="1000" style="width: 200px"></el-input-number>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -78,7 +78,9 @@
         </el-dialog>
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -96,7 +98,7 @@ export default {
       },
       loading: false,
       city_options: provinceAndCityData,
-      cityItem: [
+      cityList: [
         {
           id: 1,
           name: "青岛",
@@ -130,17 +132,17 @@ export default {
           car_num: "542"
         }
       ],
-      searchCityItem: [],
+      searchCityList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addCityItem: {
-        new_id: "",
-        new_name: "",
-        new_code: "",
-        new_province: "",
-        new_p_num: "",
-        new_car_num: "",
+        id: "",
+        name: "",
+        code: "",
+        province: "",
+        p_num: "",
+        car_num: "",
         selectedOptions: [],
       },
       editFormVisible: false,
@@ -166,9 +168,9 @@ export default {
   },
   methods: {
     addAddressChange(arr) {
-      this.addCityItem.new_province = CodeToText[this.addCityItem.selectedOptions[0]];
-      this.addCityItem.new_name = CodeToText[this.addCityItem.selectedOptions[1]];
-      this.addCityItem.new_code = this.addCityItem.selectedOptions[1];
+      this.addCityItem.province = CodeToText[this.addCityItem.selectedOptions[0]];
+      this.addCityItem.name = CodeToText[this.addCityItem.selectedOptions[1]];
+      this.addCityItem.code = this.addCityItem.selectedOptions[1];
     },
     editAddressChange(arr) {
       this.editForm.province = CodeToText[this.editForm.selectedOptions[0]];
@@ -179,12 +181,12 @@ export default {
       console.log(provinceAndCityData);
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+        this.searchCityList = JSON.parse(JSON.stringify(this.cityList));
       } else {
-        this.searchCityItem = [];
-        for (let item in this.cityItem) {
-          if (JSON.stringify(this.cityItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchCityItem.push(this.cityItem[item]);
+        this.searchCityList = [];
+        for (let item in this.cityList) {
+          if (JSON.stringify(this.cityList[item]).search(this.filters.input_id) !== -1) {
+            this.searchCityList.push(this.cityList[item]);
           }
         }
       }
@@ -200,22 +202,22 @@ export default {
     },
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addCityItem.new_id,
-        name: this.addCityItem.new_name,
-        code: this.addCityItem.new_code,
-        province: this.addCityItem.new_province,
-        p_num: this.addCityItem.new_p_num,
-        car_num: this.addCityItem.new_car_num
+      let obj = {
+        id: this.addCityItem.id,
+        name: this.addCityItem.name,
+        code: this.addCityItem.code,
+        province: this.addCityItem.province,
+        p_num: this.addCityItem.p_num,
+        car_num: this.addCityItem.car_num
       };
-      this.cityItem.push(new_obj);
-      this.addCityItem.new_id = "";
-      this.addCityItem.new_name = "";
-      this.addCityItem.new_code = "";
-      this.addCityItem.new_province = "";
-      this.addCityItem.new_p_num = "";
-      this.addCityItem.new_car_num = "";
-      this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+      this.cityList.push(obj);
+      this.addCityItem.id = "";
+      this.addCityItem.name = "";
+      this.addCityItem.code = "";
+      this.addCityItem.province = "";
+      this.addCityItem.p_num = "";
+      this.addCityItem.car_num = "";
+      this.searchCityList = JSON.parse(JSON.stringify(this.cityList));
       this.$message({
         message: "添加成功！",
         code: "success"
@@ -232,8 +234,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.cityItem.splice(index, 1);
-          this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+          this.cityList.splice(index, 1);
+          this.searchCityList = JSON.parse(JSON.stringify(this.cityList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -247,7 +249,7 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.cityItem.forEach(item => {
+            this.cityList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.name = this.editForm.name;
@@ -257,7 +259,7 @@ export default {
                 item.car_num = this.editForm.car_num;
               }
             });
-            this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+            this.searchCityList = JSON.parse(JSON.stringify(this.cityList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -275,7 +277,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.cityItem.forEach(item => {
+          this.cityList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -286,8 +288,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.cityItem = tempItem;
-          this.searchCityItem = JSON.parse(JSON.stringify(this.cityItem));
+          this.cityList = tempItem;
+          this.searchCityList = JSON.parse(JSON.stringify(this.cityList));
           this.loading = false;
           this.$message({
             message: "删除成功",

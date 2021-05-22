@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchMaterialItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="searchMaterialList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="m_name" label="物资名称" width="130" align="center"></el-table-column>
@@ -33,42 +33,42 @@
         <el-table-column prop="ddl" label="物资清点时间" min-width="130" align="center" sortable></el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" icon="el-icon-remove" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <el-dialog title="添加物资" :visible.sync="dialogFormVisible" width="500px" :append-to-body="true" center>
           <el-form :model="addMaterialItem">
             <el-form-item label="物资ID：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_id" style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.id" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资名称：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_m_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.m_name" maxlength="10" show-word-limit style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资数量：" :label-width="formLabelWidth">
-              <el-input-number v-model="addMaterialItem.new_num" @change="handleChange" :min="1" style="width: 200px"></el-input-number>
+              <el-input-number v-model="addMaterialItem.num" @change="handleChange" :min="1" style="width: 200px"></el-input-number>
             </el-form-item>
             <el-form-item label="物资类型：" :label-width="formLabelWidth">
-              <el-select v-model="addMaterialItem.new_type" placeholder="请选择物资类型" style="width: 200px">
+              <el-select v-model="addMaterialItem.type" placeholder="请选择物资类型" style="width: 200px">
                 <el-option value="器材工具" label="器材工具">器材工具</el-option>
                 <el-option value="生命救助" label="生命救助">生命救助</el-option>
                 <el-option value="精神救助" label="精神救助">精神救助</el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="物资清点人：" :label-width="formLabelWidth">
-              <el-select v-model="addMaterialItem.new_name" placeholder="请选择物资清点人" style="width: 200px">
+              <el-select v-model="addMaterialItem.name" placeholder="请选择物资清点人" style="width: 200px">
                 <el-option value="萌萌" label="萌萌">萌萌</el-option>
                 <el-option value="海洋哥" label="海洋哥">海洋哥</el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="物资清点人电话：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_tel" style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.tel" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资编号：" :label-width="formLabelWidth">
-              <el-input v-model="addMaterialItem.new_code" style="width: 200px"></el-input>
+              <el-input v-model="addMaterialItem.code" style="width: 200px"></el-input>
             </el-form-item>
             <el-form-item label="物资清点时间：" :label-width="formLabelWidth">
-              <el-date-picker type="date" placeholder="选择物资清点时间" v-model="addMaterialItem.new_ddl" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+              <el-date-picker type="date" placeholder="选择物资清点时间" v-model="addMaterialItem.ddl" style="width: 200px;" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </el-form>
@@ -119,7 +119,9 @@
         </el-dialog>
       </el-table>
       <el-col :span="24" class="toolbar" style="margin-top: 20px">
-        <el-button type="danger" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
+        <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
+        <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
         <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
       </el-col>
     </template>
@@ -134,7 +136,7 @@ export default {
         input_id: "",
       },
       loading: false,
-      materialItem: [
+      materialList: [
         {
           id: 1,
           m_name: "高压水枪",
@@ -186,19 +188,19 @@ export default {
           ddl: "2021-05-29"
         }
       ],
-      searchMaterialItem: [],
+      searchMaterialList: [],
       multipleSelection: [],
       dialogFormVisible: false,
       formLabelWidth: "150px",
       addMaterialItem: {
-        new_id: "",
-        new_m_name: "",
-        new_num: "",
-        new_type: "",
-        new_name: "",
-        new_tel: "",
-        new_code: "",
-        new_ddl: ""
+        id: "",
+        m_name: "",
+        num: "",
+        type: "",
+        name: "",
+        tel: "",
+        code: "",
+        ddl: ""
       },
       editFormVisible: false,
       editFormId: 0,
@@ -218,12 +220,12 @@ export default {
     getMaterialInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {
-        this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+        this.searchMaterialList = JSON.parse(JSON.stringify(this.materialList));
       } else {
-        this.searchMaterialItem = [];
-        for (let item in this.materialItem) {
-          if (JSON.stringify(this.materialItem[item]).search(this.filters.input_id) !== -1) {
-            this.searchMaterialItem.push(this.materialItem[item]);
+        this.searchMaterialList = [];
+        for (let item in this.materialList) {
+          if (JSON.stringify(this.materialList[item]).search(this.filters.input_id) !== -1) {
+            this.searchMaterialList.push(this.materialList[item]);
           }
         }
       }
@@ -236,26 +238,26 @@ export default {
     },
     dialogClick() {
       this.dialogFormVisible = false;
-      let new_obj = {
-        id: this.addMaterialItem.new_id,
-        m_name: this.addMaterialItem.new_m_name,
-        num: this.addMaterialItem.new_num,
-        type: this.addMaterialItem.new_type,
-        name: this.addMaterialItem.new_name,
-        tel: this.addMaterialItem.new_tel,
-        code: this.addMaterialItem.new_code,
-        ddl: this.addMaterialItem.new_ddl
+      let obj = {
+        id: this.addMaterialItem.id,
+        m_name: this.addMaterialItem.m_name,
+        num: this.addMaterialItem.num,
+        type: this.addMaterialItem.type,
+        name: this.addMaterialItem.name,
+        tel: this.addMaterialItem.tel,
+        code: this.addMaterialItem.code,
+        ddl: this.addMaterialItem.ddl
       };
-      this.materialItem.push(new_obj);
-      this.addMaterialItem.new_id = "";
-      this.addMaterialItem.new_m_name = "";
-      this.addMaterialItem.new_num = "";
-      this.addMaterialItem.new_type = "";
-      this.addMaterialItem.new_name = "";
-      this.addMaterialItem.new_tel = "";
-      this.addMaterialItem.new_code = "";
-      this.addMaterialItem.new_ddl = "";
-      this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+      this.materialList.push(obj);
+      this.addMaterialItem.id = "";
+      this.addMaterialItem.m_name = "";
+      this.addMaterialItem.num = "";
+      this.addMaterialItem.type = "";
+      this.addMaterialItem.name = "";
+      this.addMaterialItem.tel = "";
+      this.addMaterialItem.code = "";
+      this.addMaterialItem.ddl = "";
+      this.searchMaterialList = JSON.parse(JSON.stringify(this.materialList));
       this.$message({
         message: "添加成功！",
         type: "success"
@@ -272,8 +274,8 @@ export default {
       }).then(() => {
         this.loading = true;
         setTimeout(() => {
-          this.materialItem.splice(index, 1);
-          this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+          this.materialList.splice(index, 1);
+          this.searchMaterialList = JSON.parse(JSON.stringify(this.materialList));
           this.loading = false;
           this.$message({
             message: "删除成功",
@@ -287,7 +289,7 @@ export default {
         this.$confirm("确认提交吗？", "提示", {}).then(() => {
           this.loading = true;
           setTimeout(() => {
-            this.materialItem.forEach(item => {
+            this.materialList.forEach(item => {
               if (item.id === this.editFormId) {
                 item.id = this.editForm.id;
                 item.m_name = this.editForm.m_name;
@@ -299,7 +301,7 @@ export default {
                 item.ddl = this.editForm.ddl;
               }
             });
-            this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+            this.searchMaterialList = JSON.parse(JSON.stringify(this.materialList));
             this.loading = false;
             this.$message({
               message: "提交成功",
@@ -317,7 +319,7 @@ export default {
         this.loading = true;
         setTimeout(() => {
           let tempItem = [];
-          this.materialItem.forEach(item => {
+          this.materialList.forEach(item => {
             let hasItem = false;
             this.multipleSelection.forEach(sele => {
               if (sele.id === item.id) {
@@ -328,8 +330,8 @@ export default {
               tempItem.push(item);
             }
           });
-          this.materialItem = tempItem;
-          this.searchMaterialItem = JSON.parse(JSON.stringify(this.materialItem));
+          this.materialList = tempItem;
+          this.searchMaterialList = JSON.parse(JSON.stringify(this.materialList));
           this.loading = false;
           this.$message({
             message: "删除成功",
