@@ -5,6 +5,10 @@
         <template slot="title"><i class="el-icon-menu"></i><span>人员维护</span></template>
         <el-menu-item index="/home-admin/register"><span>用户信息管理</span></el-menu-item>
       </el-submenu>
+      <el-submenu index="2" class="submenu">
+        <template slot="title"><i class="el-icon-menu"></i><span>系统维护</span></template>
+        <el-menu-item index="/home-admin/rate"><span>系统评分</span></el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

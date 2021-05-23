@@ -18,7 +18,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchAlertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table stripe ref="multipleTable" :data="searchAlertItem" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="emergency_name" label="事件名称" width="100" align="center"></el-table-column>
         <el-table-column prop="company_code" label="企业编号" width="100" align="center"></el-table-column>
@@ -169,7 +169,10 @@
           </div>
         </el-dialog>
       </el-table>
-      <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                     style="float:right;" :page-sizes="[10, 15, 20, 25, 30]" :page-size="10"
+                     layout="total, sizes, prev, pager, next, jumper" :total="200" background>
+      </el-pagination>
     </template>
   </section>
 </template>
@@ -182,6 +185,7 @@ export default {
         input_id: "",
       },
       loading: false,
+      currentPage: 1,
       alertItem: [
         {
           id: 1,
@@ -278,6 +282,12 @@ export default {
     };
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页${val}条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     handleApprove(index, row) {
       this.passFormVisible = true;
       this.passFormId = row.id;

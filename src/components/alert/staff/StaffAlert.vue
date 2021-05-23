@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchAlertList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table stripe ref="multipleTable" :data="searchAlertList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="emergency_name" label="事件名称" width="100" align="center"></el-table-column>
@@ -35,7 +35,17 @@
         <el-table-column prop="process_create" label="流程创建时间" width="120" align="center"></el-table-column>
         <el-table-column prop="update_id" label="最后更新者编号" width="120" align="center"></el-table-column>
         <el-table-column prop="process_update" label="最后更新时间" width="120" align="center"></el-table-column>
-        <el-table-column prop="process_state" label="流程状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="process_state" label="流程状态" width="100" align="center">
+<!--          <template slot-scope="scope">-->
+<!--            <el-popover trigger="hover" placement="top">-->
+<!--              <p>姓名: {{1}}</p>-->
+<!--              <p>住址: {{2}}</p>-->
+<!--              <div slot="reference" class="name-wrapper">-->
+<!--                <el-tag size="medium">{{3}}</el-tag>-->
+<!--              </div>-->
+<!--            </el-popover>-->
+<!--          </template>-->
+        </el-table-column>
         <el-table-column label="操作" align="center" min-width="200">
           <template scope="scope">
             <el-button size="small" icon="el-icon-edit-outline" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -147,7 +157,10 @@
         <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
         <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
         <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
-        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                       style="float:right;" :page-sizes="[10, 15, 20, 25, 30]" :page-size="10"
+                       layout="total, sizes, prev, pager, next, jumper" :total="200" background>
+        </el-pagination>
       </el-col>
     </template>
   </section>
@@ -161,6 +174,7 @@ export default {
         input_id: "",
       },
       loading: false,
+      currentPage: 1,
       alertList: [
         {
           id: 1,
@@ -247,6 +261,12 @@ export default {
     };
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页${val}条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     getAlertInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {

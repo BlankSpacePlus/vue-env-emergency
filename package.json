@@ -22,11 +22,13 @@
     "qs": "latest",
     "vue": "^2.5.2",
     "vue-echarts-v3": "^2.0.1",
+    "vue-multiple-rate": "^1.2.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.6.0",
     "@vue/cli-service": "^3.6.0",
+    "@vue/composition-api": "^1.0.0-rc.9",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

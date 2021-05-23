@@ -18,6 +18,7 @@ import ExpertAlert from "../components/alert/expert/ExpertAlert";
 import StaffAlert from "../components/alert/staff/StaffAlert";
 
 import Register from "../components/register/Register";
+import Rate from "../components/manage/admin/Rate"
 import Emergency from "../components/emergency/Emergency";
 import Material from "../components/material/Material";
 import MaterialLocation from "../components/material/MaterialLocation";
@@ -66,6 +67,13 @@ export default new Router({
         {
           path: '/home-admin/register',
           component: Register,
+          meta: {
+            title: "环保应急管理系统"
+          }
+        },
+        {
+          path: '/home-admin/rate',
+          component: Rate,
           meta: {
             title: "环保应急管理系统"
           }

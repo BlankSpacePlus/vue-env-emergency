@@ -21,7 +21,7 @@
       </el-form>
     </el-col>
     <template>
-      <el-table ref="multipleTable" :data="searchProcessList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table stripe ref="multipleTable" :data="searchProcessList" highlight-current-row v-loading="loading" tooltip-effect="dark" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="id" label="ID" width="70" align="left" sortable></el-table-column>
         <el-table-column prop="name" label="流程名称" width="150" align="center"></el-table-column>
@@ -91,7 +91,10 @@
         <el-button type="danger" icon="el-icon-delete-solid" @click="batchRemove" :disabled="this.multipleSelection.length===0">批量删除</el-button>
         <el-button type="primary" icon="el-icon-upload2" @click="">批量导入</el-button>
         <el-button type="primary" icon="el-icon-download" @click="">批量导出</el-button>
-        <el-pagination background layout="prev, pager, next" :page-size="10" :total="200" style="float:right;" @current-change="handleCurrentChange"></el-pagination>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                       style="float:right;" :page-sizes="[10, 15, 20, 25, 30]" :page-size="10"
+                       layout="total, sizes, prev, pager, next, jumper" :total="200" background>
+        </el-pagination>
       </el-col>
     </template>
   </section>
@@ -105,6 +108,7 @@ export default {
         input_id: "",
       },
       loading: false,
+      currentPage: 1,
       processList: [
         {
           id: 1,
@@ -151,6 +155,12 @@ export default {
     };
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页${val}条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     getProcessInfo() {
       this.loading = false;
       if (this.filters.input_id === "") {

@@ -17,6 +17,10 @@ router.beforeEach((to, from, next) => {
 
 Vue.use(VueResource)
 
+import VmRate from 'vue-multiple-rate'
+import 'vue-multiple-rate/lib/rate.css'
+Vue.component(VmRate.name, VmRate)
+
 new Vue({
   el: '#app',
   router,
