@@ -36,10 +36,9 @@ export default {
   width: 400px;
   height: 250px;
   padding: 15px 15px 15px;
-  background: #99a9bf;
   border: 1px solid #eaeaea;
   box-shadow: 0 0 20px #cac6c6;
-  background-image: linear-gradient(to right, #99a9bf, #d3dce6);
+  background: #99a9bf linear-gradient(to right, #99a9bf, #d3dce6);
   margin: 20px;
 }
 </style>
